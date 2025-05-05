@@ -26,7 +26,7 @@ export class ProductStore {
             //console.log('data='+JSON.stringify(data))
             return data
         } catch (error) {
-            throw new Error('Cannot get list of Product: ' + error)
+            throw new Error(`Cannot get list of Products.  Error: ${error}`)
         }
     }
 
@@ -38,7 +38,19 @@ export class ProductStore {
             //console.log('data='+JSON.stringify(data))
             return data
         } catch (error) {
-            throw new Error('Cannot create Product: ' + error)
+            throw new Error(`Cannot create Product.  Error: ${error}`)
+        }
+    }
+
+    // method to return details of a Product
+    async show(id: number) {
+        try {
+            //console.log('ProductStore::show(id: number)')
+            const data = await sql`SELECT * FROM products WHERE id=${id}`
+            //console.log('data='+JSON.stringify(data))
+            return data
+        } catch (error) {
+            throw new Error(`Could not find product ${id}. Error: ${error}`)
         }
     }
 }
