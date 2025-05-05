@@ -8,11 +8,11 @@ export interface Product {
     brand: string
     price: number
     description: string
-    imageUrl: string
-    flavourName: string
-    puffsNumber: number
+    image_url: string
+    flavour_name: string
+    puffs_number: number
     ingredients: string
-    typeProduct: productType
+    type_product: productType
     quantity: number
 }
 
@@ -34,7 +34,8 @@ export class ProductStore {
     async create(p: Product) {
         try {
             //console.log('ProductStore::create(p:Product)')
-            const data = await sql`INSERT INTO products (name, brand, price, description, imageUrl, flavourName, puffsNumber, ingredients, typeProduct, quantity) VALUES(${p.name}, ${p.brand}, ${p.price}, ${p.description}, ${p.imageUrl}, ${p.flavourName}, ${p.puffsNumber}, ${p.ingredients}, ${p.typeProduct}, ${p.quantity}) RETURNING *`
+            console.log('p='+JSON.stringify(p))
+            const data = await sql`INSERT INTO products (name, brand, price, description, image_url, flavour_name, puffs_number, ingredients, type_product, quantity) VALUES(${p.name}, ${p.brand}, ${p.price}, ${p.description}, ${p.image_url}, ${p.flavour_name}, ${p.puffs_number}, ${p.ingredients}, ${p.type_product}, ${p.quantity}) RETURNING *`
             //console.log('data='+JSON.stringify(data))
             return data
         } catch (error) {
@@ -51,6 +52,20 @@ export class ProductStore {
             return data
         } catch (error) {
             throw new Error(`Could not find product ${id}. Error: ${error}`)
+        }
+    }
+
+    // method to update details of a Product
+    async update(id: number, p: Product) {
+        try {
+            console.log('ProductStore::update(id: number, p: Product)')
+
+            const data = await sql`UPDATE products SET name = ${p.name}, brand = ${p.brand}, price = ${p.price}, description = ${p.description}, image_url = ${p.image_url}, flavour_name = ${p.flavour_name}, puffs_number = ${p.puffs_number}, ingredients = ${p.ingredients}, type_product = ${p.type_product}, quantity = ${p.quantity} WHERE id=${id} RETURNING *`
+
+            console.log('data='+JSON.stringify(data))
+            return data
+        } catch (error) {
+            throw new Error(`Could not update product ${id}. Error: ${error}`)
         }
     }
 }
