@@ -7,5 +7,4 @@ const config = {
 
 const sql = neon(config.dbUrl)
 
-
 export default sql
