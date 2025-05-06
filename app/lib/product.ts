@@ -7,11 +7,11 @@ export interface Product {
     name: string
     brand: string
     price: number
-    description: string
-    image_url: string
+    description?: string
+    image_blob?: string
     flavour_name: string
     puffs_number: number
-    ingredients: string
+    ingredients?: string
     type_product: productType
     quantity: number
 }
@@ -22,7 +22,7 @@ export class ProductStore {
     async index() {
         try {
             //console.log('ProductStore::index()')
-            const data = await sql`SELECT * FROM products;`
+            const data = await sql`SELECT * FROM products ORDER BY id;`
             //console.log('data='+JSON.stringify(data))
             return data
         } catch (error) {
@@ -35,7 +35,8 @@ export class ProductStore {
         try {
             //console.log('ProductStore::create(p:Product)')
             //console.log('p='+JSON.stringify(p))
-            const data = await sql`INSERT INTO products (name, brand, price, description, image_url, flavour_name, puffs_number, ingredients, type_product, quantity) VALUES(${p.name}, ${p.brand}, ${p.price}, ${p.description}, ${p.image_url}, ${p.flavour_name}, ${p.puffs_number}, ${p.ingredients}, ${p.type_product}, ${p.quantity}) RETURNING *`
+            const imageBlob = p.image_blob ? Array.from(Buffer.from(p.image_blob, 'utf-8')) : null
+            const data = await sql`INSERT INTO products (name, brand, price, description, image_blob, flavour_name, puffs_number, ingredients, type_product, quantity) VALUES(${p.name}, ${p.brand}, ${p.price}, ${p.description}, ${imageBlob}, ${p.flavour_name}, ${p.puffs_number}, ${p.ingredients}, ${p.type_product}, ${p.quantity}) RETURNING *`
             //console.log('data='+JSON.stringify(data))
             return data
         } catch (error) {
@@ -59,7 +60,8 @@ export class ProductStore {
     async update(id: number, p: Product) {
         try {
             //console.log('ProductStore::update(id: number, p: Product)')
-            const data = await sql`UPDATE products SET name = ${p.name}, brand = ${p.brand}, price = ${p.price}, description = ${p.description}, image_url = ${p.image_url}, flavour_name = ${p.flavour_name}, puffs_number = ${p.puffs_number}, ingredients = ${p.ingredients}, type_product = ${p.type_product}, quantity = ${p.quantity} WHERE id=${id} RETURNING *`
+            const imageBlob = p.image_blob ? Array.from(Buffer.from(p.image_blob, 'utf-8')) : null
+            const data = await sql`UPDATE products SET name = ${p.name}, brand = ${p.brand}, price = ${p.price}, description = ${p.description}, image_blob = ${imageBlob}, flavour_name = ${p.flavour_name}, puffs_number = ${p.puffs_number}, ingredients = ${p.ingredients}, type_product = ${p.type_product}, quantity = ${p.quantity} WHERE id=${id} RETURNING *`
             //console.log('data='+JSON.stringify(data))
             return data
         } catch (error) {

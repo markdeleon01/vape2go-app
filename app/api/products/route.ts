@@ -25,7 +25,7 @@ export async function POST(request: Request) {
 			brand: data.brand,
 			price: data.price,
 			description: data.description,
-			image_url: data.image_url,
+			image_blob: data.image_blob,
 			flavour_name: data.flavour_name,
 			puffs_number: data.puffs_number,
 			ingredients: data.ingredients,
