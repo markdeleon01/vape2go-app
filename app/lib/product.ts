@@ -1,0 +1,83 @@
+import sql from './database'
+
+export type productType = 'P' | 'B' // P = Pod, B = Battery
+
+export interface Product {
+    id?: number
+    name: string
+    brand: string
+    price: number
+    description?: string
+    image_blob?: string
+    flavour_name: string
+    puffs_number: number
+    ingredients?: string
+    type_product: productType
+    quantity: number
+}
+
+export class ProductStore {
+    
+    // method to return a list of Product
+    async index() {
+        try {
+            //console.log('ProductStore::index()')
+            const data = await sql`SELECT * FROM products ORDER BY id;`
+            //console.log('data='+JSON.stringify(data))
+            return data
+        } catch (error) {
+            throw new Error(`Cannot get list of Products.  Error: ${error}`)
+        }
+    }
+
+    // method to create a Product
+    async create(p: Product) {
+        try {
+            //console.log('ProductStore::create(p:Product)')
+            //console.log('p='+JSON.stringify(p))
+            const imageBlob = p.image_blob ? Array.from(Buffer.from(p.image_blob, 'utf-8')) : null
+            const data = await sql`INSERT INTO products (name, brand, price, description, image_blob, flavour_name, puffs_number, ingredients, type_product, quantity) VALUES(${p.name}, ${p.brand}, ${p.price}, ${p.description}, ${imageBlob}, ${p.flavour_name}, ${p.puffs_number}, ${p.ingredients}, ${p.type_product}, ${p.quantity}) RETURNING *`
+            //console.log('data='+JSON.stringify(data))
+            return data
+        } catch (error) {
+            throw new Error(`Cannot create Product.  Error: ${error}`)
+        }
+    }
+
+    // method to return details of a Product
+    async show(id: number) {
+        try {
+            //console.log('ProductStore::show(id: number)')
+            const data = await sql`SELECT * FROM products WHERE id=${id}`
+            //console.log('data='+JSON.stringify(data))
+            return data
+        } catch (error) {
+            throw new Error(`Could not find product ${id}. Error: ${error}`)
+        }
+    }
+
+    // method to update details of a Product
+    async update(id: number, p: Product) {
+        try {
+            //console.log('ProductStore::update(id: number, p: Product)')
+            const imageBlob = p.image_blob ? Array.from(Buffer.from(p.image_blob, 'utf-8')) : null
+            const data = await sql`UPDATE products SET name = ${p.name}, brand = ${p.brand}, price = ${p.price}, description = ${p.description}, image_blob = ${imageBlob}, flavour_name = ${p.flavour_name}, puffs_number = ${p.puffs_number}, ingredients = ${p.ingredients}, type_product = ${p.type_product}, quantity = ${p.quantity} WHERE id=${id} RETURNING *`
+            //console.log('data='+JSON.stringify(data))
+            return data
+        } catch (error) {
+            throw new Error(`Could not update product ${id}. Error: ${error}`)
+        }
+    }
+
+    // method to return details of a Product
+    async delete(id: number) {
+        try {
+            //console.log('ProductStore::delete(id: number)')
+            const data = await sql`DELETE FROM products WHERE id=${id}`
+            //console.log('data='+JSON.stringify(data))
+            return data
+        } catch (error) {
+            throw new Error(`Could not find product ${id}. Error: ${error}`)
+        }
+    }
+}
