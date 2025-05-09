@@ -3,6 +3,7 @@
 import { use } from 'react'
 import { Product } from '../lib/product'
 import ProductItem from './productItem'
+import styles from './styles.productList.module.css'
 import Link from 'next/link'
 
 export default function ProductsList({
@@ -14,7 +15,7 @@ export default function ProductsList({
 
 	return (
 		<>
-			<div>
+			<div className={styles.addProduct}>
 				<p><Link data-testid='add-product-link' href='#'>+ Add new product</Link></p>
 			</div>
 			<div>

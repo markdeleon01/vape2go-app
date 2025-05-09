@@ -6,13 +6,13 @@ export default function ProductItem( {product} : {product:Product} ) {
 	return (
 		<>
 			<div className={styles.productItem}>
-				<div>
-					<div>
+				<div className={styles.heading}>
+					<div className={styles.name}>
 						<p>
 							<b>Name:</b>&nbsp;&nbsp;{product.name}
 						</p>
 					</div>
-					<div>
+					<div className={styles.actions}>
 						<div><Link data-testid='edit-product-link' href='#'>Edit</Link></div>
 						<div><Link data-testid='delete-product-link' href='#'>Delete</Link></div>
 					</div>
@@ -24,17 +24,7 @@ export default function ProductItem( {product} : {product:Product} ) {
 				</div>
 				<div>
 					<p>
-						<b>Price:</b>&nbsp;&nbsp;&#8369;{product.price}
-					</p>
-				</div>
-				<div>
-					<p>
 						<b>Flavour name:</b>&nbsp;&nbsp;{product.flavour_name}
-					</p>
-				</div>
-				<div>
-					<p>
-						<b>Number of puffs:</b>&nbsp;&nbsp;{product.puffs_number}
 					</p>
 				</div>
 				<div>
@@ -44,7 +34,17 @@ export default function ProductItem( {product} : {product:Product} ) {
 				</div>
 				<div>
 					<p>
+						<b>Number of puffs:</b>&nbsp;&nbsp;{product.puffs_number}
+					</p>
+				</div>
+				<div>
+					<p>
 						<b>Ingredients:</b>&nbsp;&nbsp;{product.ingredients}
+					</p>
+				</div>
+				<div>
+					<p>
+						<b>Price:</b>&nbsp;&nbsp;&#8369;{product.price}
 					</p>
 				</div>
 				<div>

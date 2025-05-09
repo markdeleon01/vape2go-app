@@ -1,7 +1,32 @@
 .productItem {
-    border-radius: 25px;
-    border: 2px solid cornflowerblue;
-    padding: 20px;
-    margin: 20px;
-    display: block;
-  }
+	border-radius: 25px;
+	border: 2px solid cornflowerblue;
+	padding: 20px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	display: block;
+}
+
+.heading {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+}
+
+.name {
+	flex-flow: row;
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	align-content: center;
+	flex-direction: row;
+}
+
+.actions {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: flex-start;
+	align-content: flex-end;
+}
