@@ -1,0 +1,58 @@
+import { Product } from '../lib/product'
+import styles from './styles.productItem.module.css'
+import Link from 'next/link'
+
+export default function ProductItem( {product} : {product:Product} ) {
+	return (
+		<>
+			<div className={styles.productItem}>
+				<div>
+					<div>
+						<p>
+							<b>Name:</b>&nbsp;&nbsp;{product.name}
+						</p>
+					</div>
+					<div>
+						<div><Link data-testid='edit-product-link' href='#'>Edit</Link></div>
+						<div><Link data-testid='delete-product-link' href='#'>Delete</Link></div>
+					</div>
+				</div>
+				<div>
+					<p>
+						<b>Brand:</b>&nbsp;&nbsp;{product.brand}
+					</p>
+				</div>
+				<div>
+					<p>
+						<b>Price:</b>&nbsp;&nbsp;&#8369;{product.price}
+					</p>
+				</div>
+				<div>
+					<p>
+						<b>Flavour name:</b>&nbsp;&nbsp;{product.flavour_name}
+					</p>
+				</div>
+				<div>
+					<p>
+						<b>Number of puffs:</b>&nbsp;&nbsp;{product.puffs_number}
+					</p>
+				</div>
+				<div>
+					<p>
+						<b>Description:</b>&nbsp;&nbsp;{product.description}
+					</p>
+				</div>
+				<div>
+					<p>
+						<b>Ingredients:</b>&nbsp;&nbsp;{product.ingredients}
+					</p>
+				</div>
+				<div>
+					<p>
+						<b>Quantity:</b>&nbsp;&nbsp;{product.quantity}
+					</p>
+				</div>
+			</div>
+		</>
+	)
+}

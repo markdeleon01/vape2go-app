@@ -1,0 +1,7 @@
+.productItem {
+    border-radius: 25px;
+    border: 2px solid cornflowerblue;
+    padding: 20px;
+    margin: 20px;
+    display: block;
+  }
