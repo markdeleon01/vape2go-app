@@ -1,0 +1,28 @@
+.productForm {
+	border-radius: 25px;
+	border: 2px solid cornflowerblue;
+	padding: 20px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	display: block;
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	padding-bottom: 10px;
+}
+
+.labelField {
+	width: 100%;
+	font-weight: bold;
+	margin-right: 15px;
+}
+
+.inputField {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	border: 2px solid lightgrey;
+}
