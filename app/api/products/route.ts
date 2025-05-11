@@ -34,7 +34,7 @@ export async function POST(request: Request) {
 		}
 		const res = await store.create(newProduct)
 		console.log('newProduct=' + JSON.stringify(res))
-		return Response.json(res)
+		return Response.json(res[0])
 	} catch (error) {
 		console.error(error)
 		return Response.json({ error: 'Internal Server Error' }, { status: 500 })
