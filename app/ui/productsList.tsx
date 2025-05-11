@@ -16,7 +16,7 @@ export default function ProductsList({
 	return (
 		<>
 			<div className={styles.addProduct}>
-				<p><Link data-testid='add-product-link' href='#'>+ Add new product</Link></p>
+				<p><Link data-testid='add-product-link' href='/products/new'>+ Add new product</Link></p>
 			</div>
 			<div>
 				<ul>

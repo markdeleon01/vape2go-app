@@ -1,8 +1,13 @@
+'use client'
+
 import { Product } from '../lib/product'
 import styles from './styles.productItem.module.css'
 import Link from 'next/link'
 
 export default function ProductItem( {product} : {product:Product} ) {
+	const editUrl = '/products/'+product.id+'/edit'
+	const deleteUrl = '/products/'+product.id+'/delete'
+
 	return (
 		<>
 			<div className={styles.productItem}>
@@ -13,8 +18,8 @@ export default function ProductItem( {product} : {product:Product} ) {
 						</p>
 					</div>
 					<div className={styles.actions}>
-						<div><Link data-testid='edit-product-link' href='#'>Edit</Link></div>
-						<div><Link data-testid='delete-product-link' href='#'>Delete</Link></div>
+						<div><Link data-testid='edit-product-link' href={editUrl}>Edit</Link></div>
+						<div><Link data-testid='delete-product-link' href={deleteUrl}>Delete</Link></div>
 					</div>
 				</div>
 				<div>
