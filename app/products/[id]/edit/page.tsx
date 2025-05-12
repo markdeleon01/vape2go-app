@@ -30,14 +30,6 @@ export default async function EditProductPage({
 							<ProductEdit product={product} />
 						</div>
 						<div className={styles.buttonGroup}>
-							<div className={styles.leftButton}>
-								<button
-									type='button'
-									className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
-								>
-									Cancel
-								</button>
-							</div>
 							<div className={styles.rightButton}>
 								<button
                                     id='updateButton'
