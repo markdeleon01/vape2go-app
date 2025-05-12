@@ -3,17 +3,17 @@ import sql from './database'
 export type productType = 'P' | 'B' // P = Pod, B = Battery
 
 export interface Product {
-    id?: number
-    name: string
-    brand: string
-    price: number
-    description?: string
-    image_blob?: string
-    flavour_name: string
-    puffs_number: number
-    ingredients?: string
-    type_product: productType
-    quantity: number
+    id?: number | undefined
+    name: string | undefined
+    brand: string | undefined
+    price: number | undefined
+    description?: string | undefined
+    image_blob?: string | undefined
+    flavour_name: string | undefined
+    puffs_number: number | undefined
+    ingredients?: string | undefined
+    type_product: string | undefined
+    quantity: number | undefined
 }
 
 export class ProductStore {

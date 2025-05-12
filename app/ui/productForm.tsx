@@ -4,8 +4,7 @@ import { Product } from '../lib/product'
 import styles from './styles.productForm.module.css'
 
 export default function ProductForm( {product} : {product:Product} ) {
-	console.log(product)
-	
+
 	return (
 		<>
 			<div className={styles.productForm}>
@@ -17,6 +16,19 @@ export default function ProductForm( {product} : {product:Product} ) {
 					</div>
 					<div className={styles.inputField}>
 						<input type='text' id="productName" name="productName" placeholder='Please enter the product name' alt='Product name' maxLength={255} size={50} defaultValue={product.name}/>
+					</div>
+				</div>
+				<div className={styles.row}>
+					<div className={styles.labelField}>
+						<label>
+						Product type:
+						</label>
+					</div>
+					<div className={styles.inputField}>
+					<select title='Product type' id="productType" name="productType">
+						<option value='P'>Pod</option>
+						<option value='B'>Battery</option>
+					</select>
 					</div>
 				</div>
 				<div className={styles.row}>
