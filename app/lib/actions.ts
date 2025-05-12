@@ -3,10 +3,15 @@
 import { redirect } from 'next/navigation'
 import { Product } from './product'
 
+import { updateProduct } from '../lib/service'
+
 // server function/server action
 export async function updateProductDetails(formData: FormData) {
-	const productId = formData.get('productId')
-	console.log(productId)
+	const productId = formData.get('productId')?.toString()
+    let pId = 0
+    if (productId != null) {
+        pId = Number.parseInt(productId)
+    }
 
 	const productPrice = formData.get('productPrice')?.toString()
 	let pPrice = 0
@@ -41,6 +46,6 @@ export async function updateProductDetails(formData: FormData) {
 		quantity: pQuantity
 	}
 
-	console.log(p)
+    await updateProduct(pId, p)
     redirect('/products')
 }
