@@ -1,9 +1,18 @@
 'use client'
 
+import { useEffect } from 'react'
 import { Product } from '../lib/product'
 import styles from './styles.productForm.module.css'
 
 export default function ProductForm( {product} : {product:Product} ) {
+
+	useEffect( () => {
+		if (product.type_product === 'P') {
+			document.querySelector('#productTypePod')?.setAttribute('SELECTED', 'true')
+		} else if (product.type_product === 'B') {
+			document.querySelector('#productTypeBattery')?.setAttribute('SELECTED', 'true')
+		}
+	})
 
 	return (
 		<>
@@ -19,15 +28,15 @@ export default function ProductForm( {product} : {product:Product} ) {
 					</div>
 				</div>
 				<div className={styles.row}>
-					<div className={styles.labelField}>
+					<div className={styles.productTypeLabelField}>
 						<label>
 						Product type:
 						</label>
 					</div>
-					<div className={styles.inputField}>
+					<div className={styles.productTypeSelectField}>
 					<select title='Product type' id="productType" name="productType">
-						<option value='P'>Pod</option>
-						<option value='B'>Battery</option>
+						<option value='P' id='productTypePod'>Pod</option>
+						<option value='B' id='productTypeBattery'>Battery</option>
 					</select>
 					</div>
 				</div>

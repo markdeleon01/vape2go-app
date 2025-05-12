@@ -26,3 +26,13 @@
 	justify-content: flex-end;
 	border: 2px solid lightgrey;
 }
+
+.productTypeLabelField {
+	width: auto;
+	font-weight: bold;
+    margin-right: 40px;
+}
+
+.productTypeSelectField {
+	border: 2px solid #d3d3d3;
+}

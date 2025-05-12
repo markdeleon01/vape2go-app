@@ -29,6 +29,11 @@ export default function ProductItem( {product} : {product:Product} ) {
 				</div>
 				<div>
 					<p>
+						<b>Type:</b>&nbsp;&nbsp;{product.type_product === 'P' ? 'Pod' : 'Battery'}
+					</p>
+				</div>
+				<div>
+					<p>
 						<b>Flavour name:</b>&nbsp;&nbsp;{product.flavour_name}
 					</p>
 				</div>
