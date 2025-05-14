@@ -6,30 +6,3 @@
 	flex-wrap: nowrap;
 	width: 100%;
 }
-
-.buttonGroup {
-	display: flex;
-	justify-content: center;
-	align-content: center;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	width: 100%;
-}
-
-.leftButton {
-	display: flex;
-	justify-content: center;
-	align-content: center;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	width: 100%;
-}
-
-.rightButton {
-	display: flex;
-	justify-content: center;
-	align-content: center;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	width: 100%;
-}

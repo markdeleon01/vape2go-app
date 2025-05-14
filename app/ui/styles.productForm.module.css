@@ -36,3 +36,30 @@
 .productTypeSelectField {
 	border: 2px solid #d3d3d3;
 }
+
+.buttonGroup {
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	width: 100%;
+}
+
+.leftButton {
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	width: 100%;
+}
+
+.rightButton {
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	width: 100%;
+}
