@@ -21,6 +21,9 @@ export default function ProductEdit({
 	useEffect(() => {
 		document.querySelector('#saveButton')
 			?.addEventListener('click', (event) => {
+				event.preventDefault()
+				event.stopPropagation()
+				
 				const saveButton = event.target as HTMLButtonElement
 				saveButton.innerText = 'Saving...'
 				saveButton.setAttribute('disabled', 'true')
@@ -38,71 +41,61 @@ export default function ProductEdit({
 					element.style.backgroundColor = 'lightgrey'
 				}
 
-				productForm.requestSubmit()
+				const productName = document.querySelector('#productName') as HTMLInputElement
+				const productBrand = document.querySelector('#productBrand') as HTMLInputElement
+				const productPrice = document.querySelector('#productPrice') as HTMLInputElement
+				let pPrice = 0
+				if (productPrice != undefined) {
+					pPrice = Number.parseInt(productPrice.value)
+				}
+				const productDescription = document.querySelector('#productDescription') as HTMLInputElement
+				const productFlavour = document.querySelector('#productFlavour') as HTMLInputElement
+				const productPuffs = document.querySelector('#productPuffsNumber') as HTMLInputElement
+				let pPuffs = 0
+				if (productPuffs != undefined) {
+					pPuffs = Number.parseInt(productPuffs.value)
+				}
+				const productIngredients = document.querySelector('#productIngredients') as HTMLInputElement
+				const productType = document.querySelector('#productType') as HTMLSelectElement
+		
+				const productQuantity = document.querySelector('#productQuantity') as HTMLInputElement
+				let pQuantity = 0
+				if (productQuantity != undefined) {
+					pQuantity = Number.parseInt(productQuantity.value)
+				}
+		
+				const productId = document.querySelector('#productId') as HTMLInputElement
+				let pId = 0
+				if (productId.value != null) {
+					pId = Number.parseInt(productId.value)
+				}
+		
+				const p: Product = {
+					name: productName.value,
+					brand: productBrand.value,
+					price: pPrice,
+					description: productDescription.value,
+					image_blob: undefined,
+					flavour_name: productFlavour.value,
+					puffs_number: pPuffs,
+					ingredients: productIngredients.value,
+					type_product: productType.value,
+					quantity: pQuantity
+				}
+		
+				// validate product details
+				console.log('updateProductDetails::p='+JSON.stringify(p))
+		
+				updateProduct(pId, p).then(() => {
+					console.log('Product updated successfully::p='+JSON.stringify(p))
+
+					// Redirect to the products page
+					router.push('/products')
+				}).catch((error) => {
+					console.error('Error updating product:', error)
+				})
 			})
-
-		document.querySelector('#productForm')
-		?.addEventListener('submit', () => {
-			updateProductDetails()
-
-			// Redirect to the products page
-			router.push('/products')
-		})
-	})
-
-	const updateProductDetails = () => {
-		const productName = document.querySelector('#productName') as HTMLInputElement
-		const productBrand = document.querySelector('#productBrand') as HTMLInputElement
-		const productPrice = document.querySelector('#productPrice') as HTMLInputElement
-		let pPrice = 0
-		if (productPrice != undefined) {
-			pPrice = Number.parseInt(productPrice.value)
-		}
-		const productDescription = document.querySelector('#productDescription') as HTMLInputElement
-		const productFlavour = document.querySelector('#productFlavour') as HTMLInputElement
-		const productPuffs = document.querySelector('#productPuffsNumber') as HTMLInputElement
-		let pPuffs = 0
-		if (productPuffs != undefined) {
-			pPuffs = Number.parseInt(productPuffs.value)
-		}
-		const productIngredients = document.querySelector('#productIngredients') as HTMLInputElement
-		const productType = document.querySelector('#productType') as HTMLSelectElement
-
-		const productQuantity = document.querySelector('#productQuantity') as HTMLInputElement
-		let pQuantity = 0
-		if (productQuantity != undefined) {
-			pQuantity = Number.parseInt(productQuantity.value)
-		}
-
-		const productId = document.querySelector('#productId') as HTMLInputElement
-		let pId = 0
-		if (productId.value != null) {
-			pId = Number.parseInt(productId.value)
-		}
-
-		const p: Product = {
-			name: productName.value,
-			brand: productBrand.value,
-			price: pPrice,
-			description: productDescription.value,
-			image_blob: undefined,
-			flavour_name: productFlavour.value,
-			puffs_number: pPuffs,
-			ingredients: productIngredients.value,
-			type_product: productType.value,
-			quantity: pQuantity
-		}
-
-		// validate product details
-		console.log('updateProductDetails::p='+JSON.stringify(p))
-
-		updateProduct(pId, p).then(() => {
-			console.log('Product updated successfully::p='+JSON.stringify(p))
-		}).catch((error) => {
-			console.error('Error updating product:', error)
-		})
-	}
-
+	}, [])
 
 	return (
 		<form id='productForm' name='productForm'>
