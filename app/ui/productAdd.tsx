@@ -28,9 +28,6 @@ export default function ProductAdd() {
 	useEffect(() => {
 		document.querySelector('#saveButton')
 			?.addEventListener('click', (event) => {
-				event.stopPropagation()
-				event.preventDefault()
-
 				const saveButton = event.target as HTMLButtonElement
 				saveButton.innerText = 'Saving...'
 				saveButton.setAttribute('disabled', 'true')
@@ -47,11 +44,17 @@ export default function ProductAdd() {
 					const element = inputs[i] as HTMLElement
 					element.style.backgroundColor = 'lightgrey'
 				}
-				productForm.requestSubmit()
 
-				const invisibleForm = document.querySelector('#invisibleForm') as HTMLFormElement
-				invisibleForm.requestSubmit()
+				productForm.requestSubmit()
 			})
+		
+		document.querySelector('#productForm')
+		?.addEventListener('submit', () => {
+			addProductDetails()
+			
+			// Redirect to the products page
+			router.push('/products')
+		})
 	})
 
 	const addProductDetails = () => {
@@ -92,10 +95,10 @@ export default function ProductAdd() {
 		}
 
 		// validate product details
+		console.log('addProductDetails::p='+JSON.stringify(p))
 
 		addProduct(p).then(() => {
-			// Redirect to the products page
-			router.push('/products')
+			console.log('Product added successfully::p='+JSON.stringify(p))
 		}).catch((error) => {
 			console.error('Error adding product:', error)
 		})
@@ -104,7 +107,7 @@ export default function ProductAdd() {
 
 	return (
 		<>
-			<form id='productForm' name='productForm' onSubmit={addProductDetails}>
+			<form id='productForm' name='productForm'>
 				<ProductForm product={productItem} />
 			</form>
 		</>

@@ -21,9 +21,6 @@ export default function ProductEdit({
 	useEffect(() => {
 		document.querySelector('#saveButton')
 			?.addEventListener('click', (event) => {
-				event.stopPropagation()
-				event.preventDefault()
-
 				const saveButton = event.target as HTMLButtonElement
 				saveButton.innerText = 'Saving...'
 				saveButton.setAttribute('disabled', 'true')
@@ -31,8 +28,8 @@ export default function ProductEdit({
 					'text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-full text-sm px-5 py-2.5 text-center'
 
 				// Disable all form controls
-				const form = document.querySelector('#productForm') as HTMLFormElement
-				const inputs = form.elements
+				const productForm = document.querySelector('#productForm') as HTMLFormElement
+				const inputs = productForm.elements
 				// Iterate over the form controls
 				for (let i = 0; i < inputs.length; i++) {
 					// Disable all form controls
@@ -41,8 +38,16 @@ export default function ProductEdit({
 					element.style.backgroundColor = 'lightgrey'
 				}
 
-				form.requestSubmit()
+				productForm.requestSubmit()
 			})
+
+		document.querySelector('#productForm')
+		?.addEventListener('submit', () => {
+			updateProductDetails()
+
+			// Redirect to the products page
+			router.push('/products')
+		})
 	})
 
 	const updateProductDetails = () => {
@@ -88,9 +93,11 @@ export default function ProductEdit({
 			quantity: pQuantity
 		}
 
+		// validate product details
+		console.log('updateProductDetails::p='+JSON.stringify(p))
+
 		updateProduct(pId, p).then(() => {
-			// Redirect to the products page
-			router.push('/products')
+			console.log('Product updated successfully::p='+JSON.stringify(p))
 		}).catch((error) => {
 			console.error('Error updating product:', error)
 		})
@@ -98,7 +105,7 @@ export default function ProductEdit({
 
 
 	return (
-		<form id='productForm' name='productForm' onSubmit={updateProductDetails}>
+		<form id='productForm' name='productForm'>
 			<ProductForm product={productItem} />
 		</form>
 	)

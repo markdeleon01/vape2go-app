@@ -1,10 +1,12 @@
+'use client'
+
 import ProductAdd from '@/app/ui/productAdd'
 import Loading from '../../ui/loading'
 import styles from './styles.addProduct.module.css'
 
 import { Suspense } from 'react'
 
-export default async function AddProductPage() {
+export default function AddProductPage() {
 
 	return (
 		<div className='grid justify-items-center min-h-screen font-[family-name:var(--font-geist-sans)]'>
