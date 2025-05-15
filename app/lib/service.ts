@@ -17,3 +17,11 @@ export async function updateProduct(id: number, p: Product) {
 	})
 	return await data.json()
 }
+
+export async function addProduct(p: Product) {
+	const data = await fetch('http://localhost:3000/api/products/', {
+		method: 'POST',
+		body: JSON.stringify(p)
+	})
+	return await data.json()
+}

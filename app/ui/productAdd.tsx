@@ -1,22 +1,29 @@
 'use client'
 
-import { use } from 'react'
 import { useEffect } from 'react'
 
 import { Product } from '../lib/product'
-import { updateProduct } from '../lib/service'
+import { addProduct } from '../lib/service'
 
 import ProductForm from './productForm'
 
 import { useRouter } from 'next/navigation'
 
-export default function ProductEdit({
-	product
-}: {
-	product: Promise<Product>
-}) {
+export default function ProductAdd() {
 	const router = useRouter()
-	const productItem = use(product)
+
+	const productItem: Product = {
+		name: undefined,
+		brand: undefined,
+		price: undefined,
+		description: undefined,
+		image_blob: undefined,
+		flavour_name: undefined,
+		puffs_number: undefined,
+		ingredients: undefined,
+		type_product: undefined,
+		quantity: undefined
+	}
 
 	useEffect(() => {
 		document.querySelector('#saveButton')
@@ -31,8 +38,8 @@ export default function ProductEdit({
 					'text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-full text-sm px-5 py-2.5 text-center'
 
 				// Disable all form controls
-				const form = document.querySelector('#productForm') as HTMLFormElement
-				const inputs = form.elements
+				const productForm = document.querySelector('#productForm') as HTMLFormElement
+				const inputs = productForm.elements
 				// Iterate over the form controls
 				for (let i = 0; i < inputs.length; i++) {
 					// Disable all form controls
@@ -40,12 +47,14 @@ export default function ProductEdit({
 					const element = inputs[i] as HTMLElement
 					element.style.backgroundColor = 'lightgrey'
 				}
+				productForm.requestSubmit()
 
-				form.requestSubmit()
+				const invisibleForm = document.querySelector('#invisibleForm') as HTMLFormElement
+				invisibleForm.requestSubmit()
 			})
 	})
 
-	const updateProductDetails = () => {
+	const addProductDetails = () => {
 		const productName = document.querySelector('#productName') as HTMLInputElement
 		const productBrand = document.querySelector('#productBrand') as HTMLInputElement
 		const productPrice = document.querySelector('#productPrice') as HTMLInputElement
@@ -69,12 +78,6 @@ export default function ProductEdit({
 			pQuantity = Number.parseInt(productQuantity.value)
 		}
 
-		const productId = document.querySelector('#productId') as HTMLInputElement
-		let pId = 0
-		if (productId.value != null) {
-			pId = Number.parseInt(productId.value)
-		}
-
 		const p: Product = {
 			name: productName.value,
 			brand: productBrand.value,
@@ -88,18 +91,22 @@ export default function ProductEdit({
 			quantity: pQuantity
 		}
 
-		updateProduct(pId, p).then(() => {
+		// validate product details
+
+		addProduct(p).then(() => {
 			// Redirect to the products page
 			router.push('/products')
 		}).catch((error) => {
-			console.error('Error updating product:', error)
+			console.error('Error adding product:', error)
 		})
 	}
 
 
 	return (
-		<form id='productForm' name='productForm' onSubmit={updateProductDetails}>
-			<ProductForm product={productItem} />
-		</form>
+		<>
+			<form id='productForm' name='productForm' onSubmit={addProductDetails}>
+				<ProductForm product={productItem} />
+			</form>
+		</>
 	)
 }

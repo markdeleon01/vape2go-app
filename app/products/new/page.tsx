@@ -1,4 +1,6 @@
+import ProductAdd from '@/app/ui/productAdd'
 import Loading from '../../ui/loading'
+import styles from './styles.addProduct.module.css'
 
 import { Suspense } from 'react'
 
@@ -8,12 +10,14 @@ export default async function AddProductPage() {
 		<div className='grid justify-items-center min-h-screen font-[family-name:var(--font-geist-sans)]'>
 			<main className='flex flex-col items-center sm:items-start'>
 				<Suspense fallback={<Loading />}>
-					<div>
+				<>
+					<div className={styles.heading}>
 						<p>Add Product</p>
 					</div>
+					<ProductAdd />
+				</>
 				</Suspense>
 			</main>
 		</div>
 	)
-	return
 }

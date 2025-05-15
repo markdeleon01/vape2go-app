@@ -20,5 +20,4 @@ export default async function DeleteProductPage({
 			</main>
 		</div>
 	)
-	return
 }

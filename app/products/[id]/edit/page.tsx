@@ -31,5 +31,4 @@ export default async function EditProductPage({
 			</main>
 		</div>
 	)
-	return
 }
