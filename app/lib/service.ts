@@ -25,3 +25,10 @@ export async function addProduct(p: Product) {
 	})
 	return await data.json()
 }
+
+export async function deleteProduct(id: number) {
+	const data = await fetch('http://localhost:3000/api/products/' + id, {
+		method: 'DELETE'
+	})
+	return await data.json()
+}

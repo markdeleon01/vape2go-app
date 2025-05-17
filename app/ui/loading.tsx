@@ -5,8 +5,8 @@ import Image from 'next/image'
 
 export default function Loading() {
 	return (
-		<div className='grid justify-items-center min-h-screen font-[family-name:var(--font-geist-sans)]'>
-			<main className='flex flex-col items-center sm:items-start'>
+		<div className={styles.loadingBlock}>
+			<div className={styles.loadingImage}>
 				<Image
 					className='dark:invert'
 					src='/vape2go_logo.jpg'
@@ -15,8 +15,8 @@ export default function Loading() {
 					height={150}
 					priority
 				/>
-                <p className={styles.loading}>Loading...</p>
-			</main>
+			</div>
+			<p className={styles.loadingMsg}>Loading...</p>
 		</div>
 	)
 }

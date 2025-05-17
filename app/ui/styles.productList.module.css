@@ -3,3 +3,12 @@
 	width: 100%;
 	text-align: center;
 }
+
+.productList {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-content: center;
+    flex-wrap: nowrap;
+    justify-content: center;
+}

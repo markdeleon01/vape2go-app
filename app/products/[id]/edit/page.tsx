@@ -25,7 +25,9 @@ export default async function EditProductPage({
 					<div className={styles.heading}>
 						<p>Edit Product</p>
 					</div>
-					<ProductEdit product={product} />
+					<div className={styles.productForm}>
+						<ProductEdit product={product} />
+					</div>
 				</>
 				</Suspense>
 			</main>

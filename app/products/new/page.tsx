@@ -16,7 +16,9 @@ export default function AddProductPage() {
 					<div className={styles.heading}>
 						<p>Add Product</p>
 					</div>
-					<ProductAdd />
+					<div className={styles.productForm}>
+						<ProductAdd />
+					</div>
 				</>
 				</Suspense>
 			</main>

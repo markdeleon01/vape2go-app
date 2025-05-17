@@ -1,4 +1,9 @@
+import { getProduct } from '../../../lib/service'
+
+import ProductDelete from '@/app/ui/productDelete'
 import Loading from '../../../ui/loading'
+
+import styles from './styles.deleteProduct.module.css'
 
 import { Suspense } from 'react'
 
@@ -7,15 +12,20 @@ export default async function DeleteProductPage({
 }: {
 	params: Promise<{ id: string }>
 }) {
-	const { id: productId } = await params
+	const { id: theProductId } = await params
+	const productId: number = Number.parseInt(theProductId)
+	const product = getProduct(productId)
 
 	return (
 		<div className='grid justify-items-center min-h-screen font-[family-name:var(--font-geist-sans)]'>
 			<main className='flex flex-col items-center sm:items-start'>
 				<Suspense fallback={<Loading />}>
-					<div>
-						<p>Delete Product: {productId}</p>
+				<>
+					<div className={styles.heading}>
+						<p>Delete Product?</p>
 					</div>
+					<ProductDelete product={product} />
+				</>
 				</Suspense>
 			</main>
 		</div>

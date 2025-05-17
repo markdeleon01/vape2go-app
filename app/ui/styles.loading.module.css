@@ -1,5 +1,26 @@
-.loading {
-    display: block;
-    width: 100%;
+.loadingBlock {
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: flex-start;
+	width: 100%;
+}
+
+.loadingImage {
     text-align: center;
+    width: 100%;
+    display: flex
+;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+}
+
+.loadingMsg {
+	display: block;
+	width: 100%;
+	text-align: center;
 }

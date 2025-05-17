@@ -39,21 +39,6 @@ export default function ProductForm({ product }: { product: Product }) {
 				</div>
 			</div>
 			<div className={styles.row}>
-				<div className={styles.productTypeLabelField}>
-					<label>Product type:</label>
-				</div>
-				<div className={styles.productTypeSelectField}>
-					<select title='Product type' id='productType' name='productType'>
-						<option value='P' id='productTypePod'>
-							Pod
-						</option>
-						<option value='B' id='productTypeBattery'>
-							Battery
-						</option>
-					</select>
-				</div>
-			</div>
-			<div className={styles.row}>
 				<div className={styles.labelField}>
 					<label>Brand:</label>
 				</div>
@@ -68,6 +53,21 @@ export default function ProductForm({ product }: { product: Product }) {
 						size={50}
 						defaultValue={product.brand}
 					/>
+				</div>
+			</div>
+			<div className={styles.row}>
+				<div className={styles.productTypeLabelField}>
+					<label>Type:</label>
+				</div>
+				<div className={styles.productTypeSelectField}>
+					<select title='Product type' id='productType' name='productType'>
+						<option value='P' id='productTypePod'>
+							Pod
+						</option>
+						<option value='B' id='productTypeBattery'>
+							Battery
+						</option>
+					</select>
 				</div>
 			</div>
 			<div className={styles.row}>

@@ -18,7 +18,7 @@ export default function ProductsList({
 			<div className={styles.addProduct}>
 				<p><Link data-testid='add-product-link' href='/products/new'>+ Add new product</Link></p>
 			</div>
-			<div>
+			<div className={styles.productList}>
 				<ul>
 					{allProducts.map((product) => (
 						<li key={product.id}><ProductItem product={product} /></li>

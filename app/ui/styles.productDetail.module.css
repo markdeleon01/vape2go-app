@@ -1,39 +1,21 @@
-.productForm {
+.productItem {
 	border-radius: 25px;
 	border: 2px solid cornflowerblue;
 	padding: 20px;
 	margin-top: 20px;
 	margin-bottom: 20px;
-	display: block;
-}
-
-.row {
 	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	padding-bottom: 10px;
-}
-
-.labelField {
 	width: 100%;
-	font-weight: bold;
-	margin-right: 15px;
+	flex-direction: column;
 }
 
-.inputField {
+.name {
+	flex-flow: row;
+	width: 100%;
 	display: flex;
+	flex-wrap: wrap;
+	align-content: center;
 	flex-direction: row;
-	justify-content: flex-end;
-	border: 2px solid lightgrey;
-}
-
-.productTypeLabelField {
-	width: 100%;
-	font-weight: bold;
-}
-
-.productTypeSelectField {
-	border: 2px solid #d3d3d3;
 }
 
 .buttonGroup {
