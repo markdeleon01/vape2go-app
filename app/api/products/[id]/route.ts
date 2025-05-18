@@ -79,7 +79,7 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
             console.log('product='+JSON.stringify(res))
             if (res.length > 0) {
                 const res = await store.delete(productId)
-                return Response.json(res[0])
+                return Response.json({ res: res[0] })
             } else {
                 return Response.json({ error: 'Not found request id '+id }, { status: 404 })
             }
