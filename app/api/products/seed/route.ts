@@ -47,6 +47,26 @@ export async function POST() {
             puffs_number: 12000,
             type_product: "P",
             quantity: 1
+        },
+        {
+            name: "Pink Sweetheart",
+            brand: "Macaron",
+            price: 450.00,
+            description: "Macaron Pink Sweetheart",
+            flavour_name: "Strawberry Watermelon",
+            puffs_number: 8000,
+            type_product: "P",
+            quantity: 1
+        },
+        {
+            name: "Purple Gemstones",
+            brand: "Macaron",
+            price: 450.00,
+            description: "Macaron Purple Gemstones",
+            flavour_name: "Grapes",
+            puffs_number: 8000,
+            type_product: "P",
+            quantity: 1
         }
         ]
 
