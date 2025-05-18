@@ -21,10 +21,14 @@ export default async function DeleteProductPage({
 			<main className='flex flex-col items-center sm:items-start'>
 				<Suspense fallback={<Loading />}>
 				<>
-					<div className={styles.heading}>
-						<p>Delete Product?</p>
+					<div className={styles.productDelete}>
+						<div className={styles.heading}>
+							<p>Delete Product?</p>
+						</div>
+						<div className={styles.productForm}>
+							<ProductDelete product={product} />
+						</div>
 					</div>
-					<ProductDelete product={product} />
 				</>
 				</Suspense>
 			</main>
