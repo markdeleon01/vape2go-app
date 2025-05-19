@@ -99,7 +99,7 @@ export async function POST() {
 		return Response.json(listProducts)
 	} catch (error) {
 		console.error(error)
-		return Response.json({ error: 'Internal Server Error' }, { status: 500 })
+        return Response.json({ error: 'Internal Server Error', status: 500 }, { status: 500 })
 	}
 
     async function createProduct(p: Product, store: ProductStore) {

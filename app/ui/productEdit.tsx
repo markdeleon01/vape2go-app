@@ -17,6 +17,11 @@ export default function ProductEdit({
 }) {
 	const router = useRouter()
 	const productItem = use(product)
+	console.log(productItem)
+
+	if (!productItem.id) {
+		throw new Error('Error loading product')
+	}
 
 	useEffect(() => {
 		document.querySelector('#saveButton')
