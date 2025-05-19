@@ -67,6 +67,26 @@ export async function POST() {
             puffs_number: 8000,
             type_product: "P",
             quantity: 1
+        },
+        {
+            name: "Tangy Purple",
+            brand: "One Bar",
+            price: 450.00,
+            description: "One Bar Tangy Purple",
+            flavour_name: "Grapes",
+            puffs_number: 14000,
+            type_product: "P",
+            quantity: 1
+        },
+        {
+            name: "Big Red",
+            brand: "X-FORGE",
+            price: 450.00,
+            description: "X-FORGE Big Red",
+            flavour_name: "Watermelon",
+            puffs_number: 14000,
+            type_product: "P",
+            quantity: 1
         }
         ]
 
