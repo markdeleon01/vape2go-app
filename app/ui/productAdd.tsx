@@ -35,17 +35,14 @@ export default function ProductAdd() {
 		saveButton.className =
 			'text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-full text-sm px-5 py-2.5 text-center'
 
-		// Disable all form controls
 		const productForm = document.querySelector('#productForm') as HTMLFormElement
 		const inputs = productForm.elements
-		// Iterate over the form controls
 		for (let i = 0; i < inputs.length; i++) {
 			// Disable all form input fields
 			const e = inputs[i]
 			if (e instanceof HTMLInputElement) {
-				inputs[i].setAttribute('disabled', '')
-				const element = inputs[i] as HTMLElement
-				element.style.backgroundColor = 'lightgrey'
+				e.setAttribute('disabled', '')
+				e.style.backgroundColor = 'lightgrey'
 			}
 		}
 	}
@@ -57,22 +54,31 @@ export default function ProductAdd() {
 		saveButton.className =
 			'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
 
-		// Enable all form controls
 		const productForm = document.querySelector('#productForm') as HTMLFormElement
 		const inputs = productForm.elements
-		// Iterate over the form controls
 		for (let i = 0; i < inputs.length; i++) {
 			// Enable all form input fields
 			const e = inputs[i]
 			if (e instanceof HTMLInputElement) {
-				inputs[i].removeAttribute('disabled')
-				const element = inputs[i] as HTMLElement
-				element.style.backgroundColor = 'white'
+				e.removeAttribute('disabled')
+				e.style.backgroundColor = 'white'
 			}
 		}
 	}
 
 	useEffect(() => {
+		const productForm = document.querySelector('#productForm') as HTMLFormElement
+		const inputs = productForm.elements
+		for (let i = 0; i < inputs.length; i++) {
+			// set color to black on focus
+			const e = inputs[i]
+			if (e instanceof HTMLInputElement) {
+				e.addEventListener('focus', function () {
+					e.setAttribute('style', 'color: black')
+				})
+			}
+		}
+
 		document.querySelector('#saveButton')?.addEventListener('click', function (event) {
 			event.stopPropagation()
 			event.preventDefault()
@@ -107,10 +113,8 @@ export default function ProductAdd() {
 					isValid = false
 				}
 				let pPrice = 0
-				console.log('productPrice.value=' + productPrice.value)
 				if (productPrice.value != undefined) {
 					pPrice = Number.parseInt(productPrice.value)
-					console.log('pPrice=' + pPrice)
 					if (Number.isNaN(pPrice)) {
 						productPrice.setAttribute('style', 'color: red')
 						productPrice.value = ''
@@ -122,10 +126,8 @@ export default function ProductAdd() {
 					isValid = false
 				}
 				let pPuffs = 0
-				console.log('productPuffs.value=' + productPuffs.value)
 				if (productPuffs.value != undefined) {
 					pPuffs = Number.parseInt(productPuffs.value)
-					console.log('pPuffs=' + pPuffs)
 					if (Number.isNaN(pPuffs)) {
 						productPuffs.setAttribute('style', 'color: red')
 						productPuffs.value = ''
@@ -133,10 +135,8 @@ export default function ProductAdd() {
 					}
 				}
 				let pQuantity = 0
-				console.log('productQuantity.value=' + productQuantity.value)
 				if (productQuantity.value != undefined) {
 					pQuantity = Number.parseInt(productQuantity.value)
-					console.log('pQuantity=' + pQuantity)
 					if (Number.isNaN(pQuantity)) {
 						productQuantity.setAttribute('style', 'color: red')
 						productQuantity.value = ''
