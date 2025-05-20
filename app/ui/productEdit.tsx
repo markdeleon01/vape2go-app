@@ -1,7 +1,7 @@
 'use client'
 
 import { use } from 'react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Product } from '../lib/product'
 import { updateProduct } from '../lib/service'
@@ -9,12 +9,15 @@ import { updateProduct } from '../lib/service'
 import ProductForm from './productForm'
 
 import { useRouter } from 'next/navigation'
+import ErrorComponent from './error'
 
 export default function ProductEdit({
 	product
 }: {
 	product: Promise<Product>
 }) {
+	const [errorMsg, setErrorMsg] = useState('')
+
 	const router = useRouter()
 	const productItem = use(product)
 	console.log(productItem)
@@ -92,19 +95,33 @@ export default function ProductEdit({
 				console.log('updateProductDetails::p='+JSON.stringify(p))
 		
 				updateProduct(pId, p).then(() => {
-					console.log('Product updated successfully::p='+JSON.stringify(p))
 
-					// Redirect to the products page
-					router.push('/products')
+					if (p.id) {
+						console.log('Product updated successfully::p='+JSON.stringify(p))
+								
+						// Redirect to the products page
+						router.push('/products')
+					} else {
+						throw new Error('Error updating product.')
+					}
+
 				}).catch((error) => {
 					console.error('Error updating product:', error)
+
+					// Display error message to the user
+					setErrorMsg(error.message)
 				})
 			})
 	}, [])
 
 	return (
-		<form id='productForm' name='productForm'>
-			<ProductForm product={productItem} />
-		</form>
+		<>
+			<form id='productForm' name='productForm'>
+				<ProductForm product={productItem} />
+			</form>
+			{ errorMsg && 
+				<ErrorComponent error={new Error(errorMsg)}/>
+			}
+		</>
 	)
 }

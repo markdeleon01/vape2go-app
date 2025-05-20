@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Product } from '../lib/product'
 import { addProduct } from '../lib/service'
@@ -8,8 +8,11 @@ import { addProduct } from '../lib/service'
 import ProductForm from './productForm'
 
 import { useRouter } from 'next/navigation'
+import ErrorComponent from './error'
 
 export default function ProductAdd() {
+	const [errorMsg, setErrorMsg] = useState('')
+
 	const router = useRouter()
 
 	const productItem: Product = {
@@ -88,12 +91,21 @@ export default function ProductAdd() {
 				console.log('addProductDetails::p='+JSON.stringify(p))
 		
 				addProduct(p).then(() => {
-					console.log('Product added successfully::p='+JSON.stringify(p))
+
+					if (p.id) {
+						console.log('Product added successfully::p='+JSON.stringify(p))
 								
-					// Redirect to the products page
-					router.push('/products')
+						// Redirect to the products page
+						router.push('/products')
+					} else {
+						throw new Error('Error adding product.')
+					}
+
 				}).catch((error) => {
 					console.error('Error adding product:', error)
+
+					// Display error message to the user
+					setErrorMsg(error.message)
 				})
 			})
 	}, [])
@@ -103,6 +115,9 @@ export default function ProductAdd() {
 			<form id='productForm' name='productForm'>
 				<ProductForm product={productItem} />
 			</form>
+			{ errorMsg && 
+				<ErrorComponent error={new Error(errorMsg)}/>
+			}
 		</>
 	)
 }

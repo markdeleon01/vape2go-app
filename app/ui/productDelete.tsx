@@ -1,7 +1,7 @@
 'use client'
 
 import { use } from 'react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Product } from '../lib/product'
 import { deleteProduct } from '../lib/service'
@@ -9,12 +9,15 @@ import { deleteProduct } from '../lib/service'
 import styles from './styles.productDetail.module.css'
 
 import { useRouter } from 'next/navigation'
+import ErrorComponent from './error'
 
 export default function ProductDelete({
 	product
 }: {
 	product: Promise<Product>
 }) {
+	const [errorMsg, setErrorMsg] = useState('')
+
 	const router = useRouter()
 	const productItem = use(product)
 	console.log(productItem)
@@ -41,16 +44,24 @@ export default function ProductDelete({
 					pId = productItem.id as number
 				}
 
-				deleteProduct(pId)
-					.then(() => {
-						console.log('Product deleted successfully::pId=' + pId)
+				deleteProduct(pId).then((data) => {
+					console.log('data='+JSON.stringify(data))
 
+					if (data.error) {
+						throw new Error('Error deleting product.')
+					} else {
+						console.log('Product deleted successfully::pId=' + pId)
+								
 						// Redirect to the products page
 						router.push('/products')
-					})
-					.catch((error) => {
-						console.error('Error deleting product:', error)
-					})
+					}
+
+				}).catch((error) => {
+					console.error('Error deleting product:', error)
+
+					// Display error message to the user
+					setErrorMsg(error.message)
+				})
 			})
 	}, [])
 
@@ -103,18 +114,21 @@ export default function ProductDelete({
 						<b>Quantity:</b>&nbsp;&nbsp;{productItem.quantity}
 					</p>
 				</div>
-			</div>
-			<div className={styles.buttonGroup}>
-				<div className={styles.rightButton}>
-					<button
-						id='deleteButton'
-						type='button'
-						className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
-					>
-						Delete
-					</button>
+				<div className={styles.buttonGroup}>
+					<div className={styles.rightButton}>
+						<button
+							id='deleteButton'
+							type='button'
+							className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
+						>
+							Delete
+						</button>
+					</div>
 				</div>
 			</div>
+			{ errorMsg && 
+				<ErrorComponent error={new Error(errorMsg)}/>
+			}
 		</>
 	)
 }
