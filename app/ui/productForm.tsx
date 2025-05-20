@@ -56,21 +56,6 @@ export default function ProductForm({ product }: { product: Product }) {
 				</div>
 			</div>
 			<div className={styles.row}>
-				<div className={styles.productTypeLabelField}>
-					<label>Type:</label>
-				</div>
-				<div className={styles.productTypeSelectField}>
-					<select title='Product type' id='productType' name='productType'>
-						<option value='P' id='productTypePod'>
-							Pod
-						</option>
-						<option value='B' id='productTypeBattery'>
-							Battery
-						</option>
-					</select>
-				</div>
-			</div>
-			<div className={styles.row}>
 				<div className={styles.labelField}>
 					<label>Flavour name:</label>
 				</div>
@@ -88,54 +73,18 @@ export default function ProductForm({ product }: { product: Product }) {
 				</div>
 			</div>
 			<div className={styles.row}>
-				<div className={styles.labelField}>
-					<label>Description:</label>
+				<div className={styles.productTypeLabelField}>
+					<label>Type:</label>
 				</div>
-				<div className={styles.inputField}>
-					<input
-						type='text'
-						id='productDescription'
-						name='productDescription'
-						placeholder='Please enter the product description'
-						alt='Product description'
-						maxLength={255}
-						size={50}
-						defaultValue={product.description}
-					/>
-				</div>
-			</div>
-			<div className={styles.row}>
-				<div className={styles.labelField}>
-					<label>Number of puffs:</label>
-				</div>
-				<div className={styles.inputField}>
-					<input
-						type='text'
-						id='productPuffsNumber'
-						name='productPuffsNumber'
-						placeholder='Please enter the product number of puffs'
-						alt='Product number of puffs'
-						maxLength={5}
-						size={50}
-						defaultValue={product.puffs_number}
-					/>
-				</div>
-			</div>
-			<div className={styles.row}>
-				<div className={styles.labelField}>
-					<label>Ingredients:</label>
-				</div>
-				<div className={styles.inputField}>
-					<input
-						type='text'
-						id='productIngredients'
-						name='productIngredients'
-						placeholder='Please enter the product ingredients'
-						alt='Product ingredients'
-						maxLength={255}
-						size={50}
-						defaultValue={product.ingredients}
-					/>
+				<div className={styles.productTypeSelectField}>
+					<select title='Product type' id='productType' name='productType'>
+						<option value='P' id='productTypePod'>
+							Pod
+						</option>
+						<option value='B' id='productTypeBattery'>
+							Battery
+						</option>
+					</select>
 				</div>
 			</div>
 			<div className={styles.row}>
@@ -169,6 +118,57 @@ export default function ProductForm({ product }: { product: Product }) {
 						maxLength={3}
 						size={50}
 						defaultValue={product.quantity}
+					/>
+				</div>
+			</div>
+			<div className={styles.row}>
+				<div className={styles.labelField}>
+					<label>Number of puffs:</label>
+				</div>
+				<div className={styles.inputField}>
+					<input
+						type='text'
+						id='productPuffsNumber'
+						name='productPuffsNumber'
+						placeholder='Please enter the product number of puffs'
+						alt='Product number of puffs'
+						maxLength={5}
+						size={50}
+						defaultValue={product.puffs_number}
+					/>
+				</div>
+			</div>
+			<div className={styles.row}>
+				<div className={styles.labelField}>
+					<label>Description:</label>
+				</div>
+				<div className={styles.inputField}>
+					<input
+						type='text'
+						id='productDescription'
+						name='productDescription'
+						placeholder='Please enter the product description'
+						alt='Product description'
+						maxLength={255}
+						size={50}
+						defaultValue={product.description}
+					/>
+				</div>
+			</div>
+			<div className={styles.row}>
+				<div className={styles.labelField}>
+					<label>Ingredients:</label>
+				</div>
+				<div className={styles.inputField}>
+					<input
+						type='text'
+						id='productIngredients'
+						name='productIngredients'
+						placeholder='Please enter the product ingredients'
+						alt='Product ingredients'
+						maxLength={255}
+						size={50}
+						defaultValue={product.ingredients}
 					/>
 				</div>
 			</div>
