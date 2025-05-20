@@ -20,7 +20,6 @@ export default function ProductDelete({
 
 	const router = useRouter()
 	const productItem = use(product)
-	console.log(productItem)
 
 	if (!productItem.id) {
 		throw new Error('Error loading product')
@@ -45,13 +44,9 @@ export default function ProductDelete({
 				}
 
 				deleteProduct(pId).then((data) => {
-					console.log('data='+JSON.stringify(data))
-
 					if (data.error) {
 						throw new Error('Error deleting product.')
-					} else {
-						console.log('Product deleted successfully::pId=' + pId)
-								
+					} else {	
 						// Redirect to the products page
 						router.push('/products')
 					}

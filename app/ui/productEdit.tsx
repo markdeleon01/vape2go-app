@@ -20,7 +20,6 @@ export default function ProductEdit({
 
 	const router = useRouter()
 	const productItem = use(product)
-	console.log(productItem)
 
 	if (!productItem.id) {
 		throw new Error('Error loading product')
@@ -92,13 +91,10 @@ export default function ProductEdit({
 				}
 		
 				// validate product details
-				console.log('updateProductDetails::p='+JSON.stringify(p))
-		
+
 				updateProduct(pId, p).then(() => {
 
-					if (p.id) {
-						console.log('Product updated successfully::p='+JSON.stringify(p))
-								
+					if (p.id) {	
 						// Redirect to the products page
 						router.push('/products')
 					} else {
