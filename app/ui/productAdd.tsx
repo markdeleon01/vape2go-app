@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 
 import { Product } from '../lib/product'
 import { addProduct } from '../lib/service'
+import { disableProductForm, enableProductForm, setupFocusInputFields } from '../lib/ui'
 
 import ProductForm from './productForm'
 
@@ -28,63 +29,15 @@ export default function ProductAdd() {
 		quantity: undefined
 	}
 
-	const disableForm = () => {
-		const saveButton = document.querySelector('#saveButton') as HTMLButtonElement
-		saveButton.innerText = 'Saving...'
-		saveButton.setAttribute('disabled', '')
-		saveButton.className =
-			'text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-full text-sm px-5 py-2.5 text-center'
-
-		const productForm = document.querySelector('#productForm') as HTMLFormElement
-		const inputs = productForm.elements
-		for (let i = 0; i < inputs.length; i++) {
-			// Disable all form input fields
-			const e = inputs[i]
-			if (e instanceof HTMLInputElement) {
-				e.setAttribute('disabled', '')
-				e.style.backgroundColor = 'lightgrey'
-			}
-		}
-	}
-
-	const enableForm = () => {
-		const saveButton = document.querySelector('#saveButton') as HTMLButtonElement
-		saveButton.innerText = 'Save'
-		saveButton.removeAttribute('disabled')
-		saveButton.className =
-			'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
-
-		const productForm = document.querySelector('#productForm') as HTMLFormElement
-		const inputs = productForm.elements
-		for (let i = 0; i < inputs.length; i++) {
-			// Enable all form input fields
-			const e = inputs[i]
-			if (e instanceof HTMLInputElement) {
-				e.removeAttribute('disabled')
-				e.style.backgroundColor = 'white'
-			}
-		}
-	}
-
 	useEffect(() => {
-		const productForm = document.querySelector('#productForm') as HTMLFormElement
-		const inputs = productForm.elements
-		for (let i = 0; i < inputs.length; i++) {
-			// set color to black on focus
-			const e = inputs[i]
-			if (e instanceof HTMLInputElement) {
-				e.addEventListener('focus', function () {
-					e.setAttribute('style', 'color: black')
-				})
-			}
-		}
+		setupFocusInputFields()
 
 		document.querySelector('#saveButton')?.addEventListener('click', function (event) {
 			event.stopPropagation()
 			event.preventDefault()
 
 			setTimeout(() => {
-				disableForm()
+				disableProductForm()
 			}, 200)
 
 			const productName = document.querySelector('#productName') as HTMLInputElement
@@ -101,9 +54,9 @@ export default function ProductAdd() {
 			const productQuantity = document.querySelector('#productQuantity') as HTMLInputElement
 
 
-			let isValid = true
 			setTimeout(() => {
 				// validate product details
+				let isValid = true
 				if (productName.value === undefined || productName.value.trim() === '') {
 					productName.setAttribute('style', 'color: red')
 					isValid = false
@@ -146,7 +99,7 @@ export default function ProductAdd() {
 
 				if (!isValid) {
 					setTimeout(() => {
-						enableForm()
+						enableProductForm()
 						return false
 					}, 200)
 				} else {
@@ -181,7 +134,6 @@ export default function ProductAdd() {
 					return true
 				}
 			}, 200)
-
 		})
 	}, [router])
 

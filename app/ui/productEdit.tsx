@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 
 import { Product } from '../lib/product'
 import { updateProduct } from '../lib/service'
+import { disableProductForm, enableProductForm, setupFocusInputFields } from '../lib/ui'
 
 import ProductForm from './productForm'
 
@@ -26,89 +27,118 @@ export default function ProductEdit({
 	}
 
 	useEffect(() => {
-		document.querySelector('#saveButton')
-			?.addEventListener('click', (event) => {
-				event.preventDefault()
-				event.stopPropagation()
-				
-				const saveButton = event.target as HTMLButtonElement
-				saveButton.innerText = 'Saving...'
-				saveButton.setAttribute('disabled', 'true')
-				saveButton.className =
-					'text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-full text-sm px-5 py-2.5 text-center'
+		setupFocusInputFields()
 
-				// Disable all form controls
-				const productForm = document.querySelector('#productForm') as HTMLFormElement
-				const inputs = productForm.elements
-				// Iterate over the form controls
-				for (let i = 0; i < inputs.length; i++) {
-					// Disable all form controls
-					inputs[i].setAttribute('disabled', '')
-					const element = inputs[i] as HTMLElement
-					element.style.backgroundColor = 'lightgrey'
-				}
+		document.querySelector('#saveButton')?.addEventListener('click', function (event) {
+			event.stopPropagation()
+			event.preventDefault()
 
-				const productName = document.querySelector('#productName') as HTMLInputElement
-				const productBrand = document.querySelector('#productBrand') as HTMLInputElement
-				const productPrice = document.querySelector('#productPrice') as HTMLInputElement
-				let pPrice = 0
-				if (productPrice != undefined) {
-					pPrice = Number.parseInt(productPrice.value)
-				}
-				const productDescription = document.querySelector('#productDescription') as HTMLInputElement
-				const productFlavour = document.querySelector('#productFlavour') as HTMLInputElement
-				const productPuffs = document.querySelector('#productPuffsNumber') as HTMLInputElement
-				let pPuffs = 0
-				if (productPuffs != undefined) {
-					pPuffs = Number.parseInt(productPuffs.value)
-				}
-				const productIngredients = document.querySelector('#productIngredients') as HTMLInputElement
-				const productType = document.querySelector('#productType') as HTMLSelectElement
-		
-				const productQuantity = document.querySelector('#productQuantity') as HTMLInputElement
-				let pQuantity = 0
-				if (productQuantity != undefined) {
-					pQuantity = Number.parseInt(productQuantity.value)
-				}
-		
-				const productId = document.querySelector('#productId') as HTMLInputElement
-				let pId = 0
-				if (productId.value != null) {
-					pId = Number.parseInt(productId.value)
-				}
-		
-				const p: Product = {
-					name: productName.value,
-					brand: productBrand.value,
-					price: pPrice,
-					description: productDescription.value,
-					image_blob: undefined,
-					flavour_name: productFlavour.value,
-					puffs_number: pPuffs,
-					ingredients: productIngredients.value,
-					type_product: productType.value,
-					quantity: pQuantity
-				}
-		
+			setTimeout(() => {
+				disableProductForm()
+			}, 200)
+
+			const productName = document.querySelector('#productName') as HTMLInputElement
+			const productBrand = document.querySelector('#productBrand') as HTMLInputElement
+			const productPrice = document.querySelector('#productPrice') as HTMLInputElement
+
+			const productDescription = document.querySelector('#productDescription') as HTMLInputElement
+			const productFlavour = document.querySelector('#productFlavour') as HTMLInputElement
+			const productPuffs = document.querySelector('#productPuffsNumber') as HTMLInputElement
+
+			const productIngredients = document.querySelector('#productIngredients') as HTMLInputElement
+			const productType = document.querySelector('#productType') as HTMLSelectElement
+	
+			const productQuantity = document.querySelector('#productQuantity') as HTMLInputElement
+	
+
+			setTimeout(() => {
 				// validate product details
+				let isValid = true
+				if (productName.value === undefined || productName.value.trim() === '') {
+					productName.setAttribute('style', 'color: red')
+					isValid = false
+				}
+				if (productBrand.value === undefined || productBrand.value.trim() === '') {
+					productBrand.setAttribute('style', 'color: red')
+					isValid = false
+				}
+				let pPrice = 0
+				if (productPrice.value != undefined) {
+					pPrice = Number.parseInt(productPrice.value)
+					if (Number.isNaN(pPrice)) {
+						productPrice.setAttribute('style', 'color: red')
+						productPrice.value = ''
+						isValid = false
+					}
+				}
+				if (productFlavour.value === undefined || productFlavour.value.trim() === '') {
+					productFlavour.setAttribute('style', 'color: red')
+					isValid = false
+				}
+				let pPuffs = 0
+				if (productPuffs.value != undefined) {
+					pPuffs = Number.parseInt(productPuffs.value)
+					if (Number.isNaN(pPuffs)) {
+						productPuffs.setAttribute('style', 'color: red')
+						productPuffs.value = ''
+						isValid = false
+					}
+				}
+				let pQuantity = 0
+				if (productQuantity.value != undefined) {
+					pQuantity = Number.parseInt(productQuantity.value)
+					if (Number.isNaN(pQuantity)) {
+						productQuantity.setAttribute('style', 'color: red')
+						productQuantity.value = ''
+						isValid = false
+					}
+				}
 
-				updateProduct(pId, p).then(() => {
-
-					if (p.id) {	
-						// Redirect to the products page
-						router.push('/products')
-					} else {
-						throw new Error('Error updating product.')
+				if (!isValid) {
+					setTimeout(() => {
+						enableProductForm()
+						return false
+					}, 200)
+				} else {
+					// if valid, continue
+					const productId = document.querySelector('#productId') as HTMLInputElement
+					let pId = 0
+					if (productId.value != null) {
+						pId = Number.parseInt(productId.value)
+					}
+				
+					const p: Product = {
+						name: productName.value,
+						brand: productBrand.value,
+						price: pPrice,
+						description: productDescription.value,
+						image_blob: undefined,
+						flavour_name: productFlavour.value,
+						puffs_number: pPuffs,
+						ingredients: productIngredients.value,
+						type_product: productType.value,
+						quantity: pQuantity
 					}
 
-				}).catch((error) => {
-					console.error('Error updating product:', error)
+					updateProduct(pId, p).then((data) => {
+						if (data.error) {
+							throw new Error('Error updating product.')
+						} else {	
+							// Redirect to the products page
+							router.push('/products')
+						}
+					}).catch((error) => {
+						console.error('Error updating product:', error)
 
-					// Display error message to the user
-					setErrorMsg(error.message)
-				})
-			})
-	}, [])
+						// Display error message to the user
+						setErrorMsg(error.message)
+					})
+	
+					return true
+				}
+			}, 200)
+		})
+	}, [router])
 
 	return (
 		<>
