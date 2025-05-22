@@ -1,8 +1,19 @@
 import { Product, ProductStore } from '@/app/lib/product'
+import verifyAuthToken from '@/app/middleware'
 
-export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(request: Request,{ params }: { params: Promise<{ id: string }> }) {
     console.log('GET /products/{id}')
 
+	// verify the auth token before allowing the user to get product details
+	try {
+		await verifyAuthToken(request)
+	} catch (error) {
+		console.error(error)
+		return Response.json(
+			{ error: 'Authentication failed' },
+			{ status: 401 }
+		)
+	}
     try {
         const { id } = await params
         console.log('id='+id)
@@ -18,7 +29,6 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
             } else {
                 return Response.json({ error: 'Not found request id '+id }, { status: 404 })
             }
-
         }
     } catch (error) {
         console.error(error)
@@ -28,7 +38,17 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
     console.log('PATCH /products/{id}')
-    
+
+	// verify the auth token before allowing the user to update product details
+	try {
+		await verifyAuthToken(request)
+	} catch (error) {
+		console.error(error)
+		return Response.json(
+			{ error: 'Authentication failed' },
+			{ status: 401 }
+		)
+	}
     try {
         const { id } = await params
         console.log('id='+id)
@@ -67,6 +87,16 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
     console.log('DELETE /products/{id}')
 
+	// verify the auth token before allowing the user to delete the product
+	try {
+		await verifyAuthToken(request)
+	} catch (error) {
+		console.error(error)
+		return Response.json(
+			{ error: 'Authentication failed' },
+			{ status: 401 }
+		)
+	}
     try {
         const { id } = await params
         console.log('id='+id)
@@ -83,7 +113,6 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
             } else {
                 return Response.json({ error: 'Not found request id '+id }, { status: 404 })
             }
-
         }
     } catch (error) {
         console.error(error)

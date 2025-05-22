@@ -1,8 +1,18 @@
 import { Product, ProductStore } from '@/app/lib/product'
+import verifyAuthToken from '@/app/middleware'
 
-export async function POST() {
+export async function POST(request: Request) {
 	console.log('POST /products/seed')
-
+	// verify the auth token before allowing the user to create a new product
+	try {
+		await verifyAuthToken(request)
+	} catch (error) {
+		console.error(error)
+		return Response.json(
+			{ error: 'Authentication failed' },
+			{ status: 401 }
+		)
+	}
 	try {
         const store = new ProductStore()
         

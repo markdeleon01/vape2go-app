@@ -1,4 +1,5 @@
 import { Product, ProductStore } from '@/app/lib/product'
+import verifyAuthToken from '@/app/middleware'
 
 export async function GET() {
 	console.log('GET /products')
@@ -17,6 +18,16 @@ export async function GET() {
 export async function POST(request: Request) {
 	console.log('POST /products')
 
+	// verify the auth token before allowing the user to create a new product
+	try {
+		await verifyAuthToken(request)
+	} catch (error) {
+		console.error(error)
+		return Response.json(
+			{ error: 'Authentication failed' },
+			{ status: 401 }
+		)
+	}
 	try {
 		const data = await request.json()
 		const store = new ProductStore()
@@ -37,6 +48,9 @@ export async function POST(request: Request) {
 		return Response.json(res[0])
 	} catch (error) {
 		console.error(error)
-		return Response.json({ error: 'Internal Server Error' }, { status: 500 })
+		return Response.json(
+			{ error: 'Internal Server Error' }, 
+			{ status: 500 }
+		)
 	}
 }
