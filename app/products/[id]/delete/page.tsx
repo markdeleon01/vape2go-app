@@ -1,10 +1,10 @@
 'use client' // Error boundaries must be Client Components
 
-import { getProduct } from '../../../lib/service'
+import { getProduct } from '@/app/lib/service'
 
 import ProductDelete from '@/app/ui/productDelete'
-import Loading from '../../../ui/loading'
-import ErrorComponent from '../../../ui/error'
+import Loading from '@/app/ui/loading'
+import ErrorComponent from '@/app/ui/error'
 
 import styles from './styles.deleteProduct.module.css'
 
@@ -24,7 +24,7 @@ export default function DeleteProductPage({
 	return (
 		<div className='grid justify-items-center min-h-screen font-[family-name:var(--font-geist-sans)]'>
 			<main className='flex flex-col items-center sm:items-start'>
-				<ErrorBoundary fallback={<ErrorComponent error={new Error('Error loading product.') }/> }>
+				<ErrorBoundary fallback={<ErrorComponent error={new Error('Unable to load page.') }/> }>
 					<Suspense fallback={<Loading />}>
 					<>
 						<div className={styles.productDelete}>

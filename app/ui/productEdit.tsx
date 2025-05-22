@@ -3,14 +3,14 @@
 import { use } from 'react'
 import { useEffect, useState } from 'react'
 
-import { Product } from '../lib/product'
-import { updateProduct } from '../lib/service'
-import { disableProductForm, enableProductForm, setupFocusInputFields } from '../lib/ui'
+import { Product } from '@/app/lib/product'
+import { updateProduct } from '@/app/lib/service'
+import { disableProductForm, enableProductForm, setupFocusInputFields } from '@/app/lib/ui'
 
-import ProductForm from './productForm'
+import ProductForm from '@/app/ui/productForm'
 
 import { useRouter } from 'next/navigation'
-import ErrorComponent from './error'
+import ErrorComponent from '@/app/ui/error'
 
 export default function ProductEdit({
 	product

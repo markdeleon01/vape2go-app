@@ -1,8 +1,8 @@
 'use client'
 
 import { use } from 'react'
-import { Product } from '../lib/product'
-import ProductItem from './productItem'
+import { Product } from '@/app/lib/product'
+import ProductItem from '@/app/ui/productItem'
 import styles from './styles.productList.module.css'
 import Link from 'next/link'
 

@@ -2,21 +2,21 @@
 
 import { useEffect, useState } from 'react'
 
-import { Product } from '../lib/product'
-import { addProduct } from '../lib/service'
-import { disableProductForm, enableProductForm, setupFocusInputFields } from '../lib/ui'
+import { Product } from '@/app/lib/product'
+import { getProduct, addProduct } from '@/app/lib/service'
 
-import ProductForm from './productForm'
+import { disableProductForm, enableProductForm, setupFocusInputFields } from '@/app/lib/ui'
+
+import ProductForm from '@/app/ui/productForm'
 
 import { useRouter } from 'next/navigation'
-import ErrorComponent from './error'
+import ErrorComponent from '@/app/ui/error'
 
 export default function ProductAdd() {
 	const [errorMsg, setErrorMsg] = useState('')
 
 	const router = useRouter()
-
-	const productItem: Product = {
+	const productItem : Product = {
 		name: undefined,
 		brand: undefined,
 		price: undefined,
@@ -28,6 +28,25 @@ export default function ProductAdd() {
 		type_product: undefined,
 		quantity: undefined
 	}
+
+	// check if user is authenticated to add a new product
+	getProduct(0).then((data) => {
+		if (data.error) {
+			throw new Error('Error loading page.')
+		}
+	}).catch((error) => {
+		console.error('Error loading page:', error)
+
+		const productForm = document.querySelector('#productForm') as HTMLFormElement
+		productForm.style.display = 'none'
+
+		const addProductHeading = document.querySelector('#addProductHeading') as HTMLFormElement
+		addProductHeading.style.display = 'none'
+
+		// Display error message to the user
+		setErrorMsg(error.message)
+	})
+
 
 	useEffect(() => {
 		setupFocusInputFields()

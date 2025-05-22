@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { Product } from '../lib/product'
+import { Product } from '@/app/lib/product'
 
 import styles from './styles.productForm.module.css'
 

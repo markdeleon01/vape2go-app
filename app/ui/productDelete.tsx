@@ -3,13 +3,13 @@
 import { use } from 'react'
 import { useEffect, useState } from 'react'
 
-import { Product } from '../lib/product'
-import { deleteProduct } from '../lib/service'
+import { Product } from '@/app/lib/product'
+import { deleteProduct } from '@/app/lib/service'
 
 import styles from './styles.productDetail.module.css'
 
 import { useRouter } from 'next/navigation'
-import ErrorComponent from './error'
+import ErrorComponent from '@/app/ui/error'
 
 export default function ProductDelete({
 	product

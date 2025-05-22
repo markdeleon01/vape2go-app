@@ -1,6 +1,6 @@
 'use client'
 
-import { Product } from '../lib/product'
+import { Product } from '@/app/lib/product'
 import styles from './styles.productItem.module.css'
 import Link from 'next/link'
 
