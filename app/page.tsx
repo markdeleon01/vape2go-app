@@ -14,6 +14,22 @@ export default function Home() {
           height={500}
           priority
         />
+        <p className={styles.linkFacebook}>
+        <a
+          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+          href="https://web.facebook.com/profile.php?id=61560683637397"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            aria-hidden
+            src="/globe.svg"
+            alt="Globe icon"
+            width={16}
+            height={16}
+          />Follow us on Facebook!
+        </a>
+        </p>
         </div>
       </main>
     </div>
