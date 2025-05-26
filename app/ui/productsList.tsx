@@ -5,6 +5,8 @@ import { Product } from '@/app/lib/product'
 import ProductItem from '@/app/ui/productItem'
 import styles from './styles.productList.module.css'
 import Link from 'next/link'
+import { isUserAuthenticated } from '../lib/authentication'
+
 
 export default function ProductsList({
 	products
@@ -15,9 +17,13 @@ export default function ProductsList({
 
 	return (
 		<>
-			<div className={styles.addProduct}>
-				<p><Link data-testid='add-product-link' href='/products/new'>+ Add new product</Link></p>
-			</div>
+			{
+				(isUserAuthenticated()) && 
+				<div className={styles.addProduct}>
+					<p><Link data-testid='add-product-link' href='/products/new'>+ Add new product</Link></p>
+				</div>
+			}
+
 			<div className={styles.productList}>
 				<ul>
 					{allProducts.map((product) => (

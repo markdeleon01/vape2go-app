@@ -3,14 +3,14 @@
 import { useEffect, useState } from 'react'
 
 import { Product } from '@/app/lib/product'
-import { getProduct, addProduct } from '@/app/lib/service'
+import { addProduct } from '@/app/lib/service'
 
 import { disableProductForm, enableProductForm, setupFocusInputFields } from '@/app/lib/ui'
 
 import ProductForm from '@/app/ui/productForm'
+import ErrorComponent from '@/app/ui/error'
 
 import { useRouter } from 'next/navigation'
-import ErrorComponent from '@/app/ui/error'
 
 export default function ProductAdd() {
 	const [errorMsg, setErrorMsg] = useState('')
@@ -28,25 +28,6 @@ export default function ProductAdd() {
 		type_product: undefined,
 		quantity: undefined
 	}
-
-	// check if user is authenticated to add a new product
-	getProduct(0).then((data) => {
-		if (data.error) {
-			throw new Error('Error loading page.')
-		}
-	}).catch((error) => {
-		console.error('Error loading page:', error)
-
-		const productForm = document.querySelector('#productForm') as HTMLFormElement
-		productForm.style.display = 'none'
-
-		const addProductHeading = document.querySelector('#addProductHeading') as HTMLFormElement
-		addProductHeading.style.display = 'none'
-
-		// Display error message to the user
-		setErrorMsg(error.message)
-	})
-
 
 	useEffect(() => {
 		setupFocusInputFields()

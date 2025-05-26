@@ -11,12 +11,20 @@ import styles from './styles.editProduct.module.css'
 import { Suspense } from 'react'
 import { use } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
+import { isUserAuthenticated } from '@/app/lib/authentication'
+import { unauthorized } from 'next/navigation'
 
 export default function EditProductPage({
 	params
 }: {
 	params: Promise<{ id: string }>
 }) {
+
+	// check if user is authenticated to update a new product
+	if (!isUserAuthenticated()) {
+		console.error('Error loading page:  Not authorized')
+		unauthorized()
+	}
 
 	const { id: theProductId } = use(params)
 	const productId: number = Number.parseInt(theProductId)
@@ -28,7 +36,7 @@ export default function EditProductPage({
 			<ErrorBoundary fallback={<ErrorComponent error={new Error('Unable to load page.') }/> }>
 				<Suspense fallback={<Loading />}>
 				<>
-					<div className={styles.heading}>
+					<div className={styles.heading} id='addProductHeading'>
 						<p>Edit Product</p>
 					</div>
 					<div className={styles.productForm}>

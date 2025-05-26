@@ -1,4 +1,5 @@
 import { Product } from './product'
+import { User } from './user'
 
 export async function getProducts() {
 	const data = await fetch('http://localhost:3000/api/products')
@@ -29,6 +30,14 @@ export async function addProduct(p: Product) {
 export async function deleteProduct(id: number) {
 	const data = await fetch('http://localhost:3000/api/products/' + id, {
 		method: 'DELETE'
+	})
+	return await data.json()
+}
+
+export async function userLogin(u: User) {
+	const data = await fetch('http://localhost:3000/api/users/login', {
+		method: 'POST',
+		body: JSON.stringify(u)
 	})
 	return await data.json()
 }
