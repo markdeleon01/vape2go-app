@@ -58,7 +58,7 @@ export default function ProductDelete({
 					setErrorMsg(error.message)
 				})
 			})
-	}, [])
+	}, [productItem.id, router])
 
 	return (
 		<>

@@ -16,7 +16,6 @@ export async function POST(request: Request) {
         }
 
         const theUser = await store.authenticate(user)
-        console.log('theUser=' + JSON.stringify(theUser))
         if (theUser) {
             return Response.json({ user: theUser, token: createToken(theUser as User) })
         } else {

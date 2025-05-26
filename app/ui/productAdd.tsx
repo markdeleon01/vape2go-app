@@ -14,8 +14,8 @@ import ErrorComponent from '@/app/ui/error'
 
 export default function ProductAdd() {
 	const [errorMsg, setErrorMsg] = useState('')
-
 	const router = useRouter()
+
 	const productItem : Product = {
 		name: undefined,
 		brand: undefined,

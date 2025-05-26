@@ -36,3 +36,7 @@ main {
 	padding-left: 40px;
 	padding-right: 40px;
 }
+
+input {
+	outline: none;
+}
