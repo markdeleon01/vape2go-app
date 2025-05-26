@@ -33,7 +33,7 @@ export default function ProductForm({ product }: { product: Product }) {
 						placeholder='Please enter the product name'
 						alt='Product name'
 						maxLength={255}
-						size={50}
+						size={35}
 						defaultValue={product.name}
 					/>
 				</div>
@@ -50,7 +50,7 @@ export default function ProductForm({ product }: { product: Product }) {
 						placeholder='Please enter the product brand'
 						alt='Product brand'
 						maxLength={255}
-						size={50}
+						size={35}
 						defaultValue={product.brand}
 					/>
 				</div>
@@ -67,7 +67,7 @@ export default function ProductForm({ product }: { product: Product }) {
 						placeholder='Please enter the product flavour'
 						alt='Product flavour'
 						maxLength={255}
-						size={50}
+						size={35}
 						defaultValue={product.flavour_name}
 					/>
 				</div>
@@ -99,7 +99,7 @@ export default function ProductForm({ product }: { product: Product }) {
 						placeholder='Please enter the product price'
 						alt='Product price'
 						maxLength={10}
-						size={50}
+						size={35}
 						defaultValue={product.price}
 					/>
 				</div>
@@ -116,7 +116,7 @@ export default function ProductForm({ product }: { product: Product }) {
 						placeholder='Please enter the product quantity'
 						alt='Product quantity'
 						maxLength={3}
-						size={50}
+						size={35}
 						defaultValue={product.quantity}
 					/>
 				</div>
@@ -133,7 +133,7 @@ export default function ProductForm({ product }: { product: Product }) {
 						placeholder='Please enter the product number of puffs'
 						alt='Product number of puffs'
 						maxLength={5}
-						size={50}
+						size={35}
 						defaultValue={product.puffs_number}
 					/>
 				</div>
@@ -150,7 +150,7 @@ export default function ProductForm({ product }: { product: Product }) {
 						placeholder='Please enter the product description'
 						alt='Product description'
 						maxLength={255}
-						size={50}
+						size={35}
 						defaultValue={product.description}
 					/>
 				</div>
@@ -167,7 +167,7 @@ export default function ProductForm({ product }: { product: Product }) {
 						placeholder='Please enter the product ingredients'
 						alt='Product ingredients'
 						maxLength={255}
-						size={50}
+						size={35}
 						defaultValue={product.ingredients}
 					/>
 				</div>

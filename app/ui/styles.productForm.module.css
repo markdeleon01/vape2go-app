@@ -10,9 +10,10 @@
 
 .row {
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	flex-wrap: nowrap;
 	padding-bottom: 10px;
+	align-items: flex-start;
 }
 
 .labelField {
@@ -44,6 +45,7 @@
 	flex-direction: row;
 	flex-wrap: nowrap;
 	width: 100%;
+	padding-top: 20px;
 }
 
 .leftButton {
