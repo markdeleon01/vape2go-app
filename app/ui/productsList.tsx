@@ -1,6 +1,6 @@
 'use client'
 
-import { use } from 'react'
+import { use, useEffect, useState } from 'react'
 import { Product } from '@/app/lib/product'
 import ProductItem from '@/app/ui/productItem'
 import styles from './styles.productList.module.css'
@@ -15,10 +15,16 @@ export default function ProductsList({
 }) {
 	const allProducts = use(products)
 
+	const [isUserLoggedIn, setUserLoggedIn] = useState(false)
+
+	useEffect( ()=> {
+		setUserLoggedIn(isUserAuthenticated())
+	}, [isUserLoggedIn])
+
 	return (
 		<>
 			{
-				(isUserAuthenticated()) && 
+				(isUserLoggedIn) && 
 				<div className={styles.addProduct}>
 					<p><Link data-testid='add-product-link' href='/products/new'>+ Add new product</Link></p>
 				</div>

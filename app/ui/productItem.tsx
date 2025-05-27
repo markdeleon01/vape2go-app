@@ -4,10 +4,17 @@ import { Product } from '@/app/lib/product'
 import styles from './styles.productItem.module.css'
 import Link from 'next/link'
 import { isUserAuthenticated } from '../lib/authentication'
+import { useEffect, useState } from 'react'
 
 export default function ProductItem( {product} : {product:Product} ) {
 	const editUrl = '/products/'+product.id+'/edit'
 	const deleteUrl = '/products/'+product.id+'/delete'
+
+	const [isUserLoggedIn, setUserLoggedIn] = useState(false)
+
+	useEffect( ()=> {
+		setUserLoggedIn(isUserAuthenticated())
+	}, [isUserLoggedIn])
 
 	return (
 		<>
@@ -19,7 +26,7 @@ export default function ProductItem( {product} : {product:Product} ) {
 						</p>
 					</div>
 					{
-					(isUserAuthenticated()) && 
+					(isUserLoggedIn) && 
 					<div className={styles.actions}>
 						<div><Link data-testid='edit-product-link' href={editUrl}>Edit</Link></div>
 						<div><Link data-testid='delete-product-link' href={deleteUrl}>Delete</Link></div>
