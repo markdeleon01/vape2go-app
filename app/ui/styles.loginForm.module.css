@@ -1,11 +1,3 @@
-.userLoginForm {
-	display: none;
-}
-
-.userGreeting {
-	display: none;
-}
-
 .adminLogin {
 	flex-direction: column;
 	margin-top: 20px;
