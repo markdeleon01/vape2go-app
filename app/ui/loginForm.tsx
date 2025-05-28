@@ -11,7 +11,6 @@ import styles from './styles.loginForm.module.css'
 
 import { useRouter } from 'next/navigation'
 
-
 export default function LoginForm() {
 	const [errorMsg, setErrorMsg] = useState('')
 	const router = useRouter()
@@ -29,17 +28,6 @@ export default function LoginForm() {
 		loginButton.setAttribute('disabled', '')
 		loginButton.className =
 			'text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-full text-sm px-5 py-2.5 text-center'
-
-		const loginForm = document.querySelector('#loginForm') as HTMLFormElement
-		const inputs = loginForm.elements
-		for (let i = 0; i < inputs.length; i++) {
-			// Disable all form input fields
-			const e = inputs[i]
-			if (e instanceof HTMLInputElement) {
-				e.setAttribute('disabled', '')
-				e.style.backgroundColor = 'lightgrey'
-			}
-		}
 	}
 
 	const enableLoginForm = () => {
@@ -50,26 +38,6 @@ export default function LoginForm() {
 		loginButton.removeAttribute('disabled')
 		loginButton.className =
 			'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
-
-		setTimeout(() => {
-			const showPassword = document.querySelector(
-				'#showPassword'
-			) as HTMLInputElement
-			showPassword.removeAttribute('checked')
-		}, 200)
-
-		setTimeout(() => {
-			const loginForm = document.querySelector('#loginForm') as HTMLFormElement
-			const inputs = loginForm.elements
-			for (let i = 0; i < inputs.length; i++) {
-				// Enable all form input fields
-				const e = inputs[i]
-				if (e instanceof HTMLInputElement) {
-					e.removeAttribute('disabled')
-					e.style.backgroundColor = 'white'
-				}
-			}
-		}, 200)
 	}
 
 	useEffect(() => {
@@ -80,10 +48,10 @@ export default function LoginForm() {
 			const passwordInputField = document.querySelector(
 				'#passwordField'
 			) as HTMLInputElement
-			if (passwordInputField.type === 'password') {
+			if (passwordInputField.type == 'password') {
 				passwordInputField.type = 'text'
 				showPassword.setAttribute('checked', '')
-			} else if (passwordInputField.type === 'text') {
+			} else if (passwordInputField.type == 'text') {
 				passwordInputField.type = 'password'
 				showPassword.removeAttribute('checked')
 			}
@@ -92,49 +60,51 @@ export default function LoginForm() {
 		const loginButton = document.querySelector(
 			'#loginButton'
 		) as HTMLButtonElement
-		loginButton.addEventListener('click', function (event) {
-				event.stopPropagation()
-				event.preventDefault()
+		loginButton.addEventListener('click', function () {
+			setErrorMsg('')
 
-				setTimeout(() => {
-					disableLoginForm()
-				}, 200)
+			disableLoginForm()
 
-				const user: User = {
-					username: (document.querySelector('#usernameField') as HTMLInputElement)
-						.value,
-					password: (document.querySelector('#passwordField') as HTMLInputElement)
-						.value
-				}
+			const user: User = {
+				username: (document.querySelector('#usernameField') as HTMLInputElement)
+					.value,
+				password: (document.querySelector('#passwordField') as HTMLInputElement)
+					.value
+			}
 
-				setTimeout(() => {
-					userLogin(user)
-						.then(async (data) => {
-							if (data.error) {
-								throw new Error('Error logging in.')
+			setTimeout(() => {
+				userLogin(user)
+					.then(async (data) => {
+						if (data.error) {
+							const showPassword = document.querySelector(
+								'#showPassword'
+							) as HTMLInputElement
+							showPassword.checked = false
+							
+							if (data.code === '401') {
+								throw new Error('Invalid credentials. Please try again.')
 							} else {
-								setUserAuthentication(data.token)
-                                setUserName(data.user.username)
-
-								// Redirect to the products page
-								router.push('/products')
+								throw new Error('Error logging in.')
 							}
-						})
-						.catch((error) => {
-							setTimeout(() => {
-								console.error('Error logging in:', error)
+						} else {
+							setUserAuthentication(data.token)
+							setUserName(data.user.username)
 
-								enableLoginForm()
+							// Redirect to the products page
+							router.push('/products')
+						}
+					})
+					.catch((error) => {
+						console.error('Error logging in:', error)
 
-								// Display error message to the user
-								setErrorMsg(error.message)
-							}, 200)
-						})
+						enableLoginForm()
 
-					return true
-				}, 200)
-			})
-	})
+						// Display error message to the user
+						setErrorMsg(error.message)
+					})
+			}, 100)
+		})
+	}, [router])
 
 	return (
 		<>
@@ -174,7 +144,6 @@ export default function LoginForm() {
 								type='checkbox'
 								id='showPassword'
 								name='showPassword'
-								value='Show Password'
 								alt='Show Password'
 								title='Show Password'
 								placeholder='Show Password'
