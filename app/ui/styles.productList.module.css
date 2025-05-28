@@ -11,4 +11,6 @@
     align-content: center;
     flex-wrap: nowrap;
     justify-content: center;
+    padding-left: 20px;
+    padding-right: 20px;
 }
