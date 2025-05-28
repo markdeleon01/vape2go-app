@@ -1,13 +1,18 @@
 'use client' // Error boundaries must be Client Components
 
+import dynamic from 'next/dynamic'
 import { getProducts } from '@/app/lib/service'
 
-import ProductsList from '@/app/ui/productsList'
 import Loading from '@/app/ui/loading'
 import ErrorComponent from '@/app/ui/error'
 
 import { Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
+
+const ProductsList = dynamic(
+	() => import('@/app/ui/productsList'),
+	{ ssr: false }
+  )
 
 export default function ProductsPage() {
 	const products = getProducts()

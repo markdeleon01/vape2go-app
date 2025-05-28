@@ -1,5 +1,6 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import ErrorComponent from '../ui/error'
 import Loading from '../ui/loading'
 
@@ -11,8 +12,16 @@ import {
 } from '../lib/authentication'
 
 import { useRouter } from 'next/navigation'
-import LoginForm from '../ui/loginForm'
-import UserGreeting from '../ui/userGreeting'
+
+const LoginForm = dynamic(
+	() => import('@/app/ui/loginForm'),
+	{ ssr: false }
+  )
+
+const UserGreeting = dynamic(
+	() => import('@/app/ui/userGreeting'),
+	{ ssr: false }
+  )
 
 export default function AdminHome() {
 
