@@ -10,23 +10,26 @@ export async function POST(request: Request) {
 	} catch (error) {
 		console.error(error)
 		return Response.json(
-			{ error: 'Authentication failed' },
+			{ error: 'Authentication failed', code: '401' },
 			{ status: 401 }
 		)
 	}
 	try {
 		const data = await request.json()
-        const store = new UserStore()
+		const store = new UserStore()
 
-        const newUser: User = {
-            username: data.username,
-            password: data.password
-        }
+		const newUser: User = {
+			username: data.username,
+			password: data.password
+		}
 
-        const res = await store.create(newUser)
+		const res = await store.create(newUser)
 		return Response.json(res[0])
 	} catch (error) {
 		console.error(error)
-		return Response.json({ error: 'Internal Server Error' }, { status: 500 })
+		return Response.json(
+			{ error: 'Internal Server Error', code: '500' },
+			{ status: 500 }
+		)
 	}
 }

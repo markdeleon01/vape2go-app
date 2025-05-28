@@ -7,11 +7,14 @@ export async function GET() {
 	try {
 		const store = new ProductStore()
 		const products: Product[] = (await store.index()) as Product[]
-		console.log('products=' + JSON.stringify(products))
+		//console.log('products=' + JSON.stringify(products))
 		return Response.json(products)
 	} catch (error) {
 		console.error(error)
-		return Response.json({ error: 'Internal Server Error' }, { status: 500 })
+		return Response.json(
+			{ error: 'Internal Server Error', code: '500' },
+			{ status: 500 }
+		)
 	}
 }
 
@@ -24,7 +27,7 @@ export async function POST(request: Request) {
 	} catch (error) {
 		console.error(error)
 		return Response.json(
-			{ error: 'Authentication failed' },
+			{ error: 'Authentication failed', code: '401' },
 			{ status: 401 }
 		)
 	}
@@ -44,12 +47,12 @@ export async function POST(request: Request) {
 			quantity: data.quantity
 		}
 		const res = await store.create(newProduct)
-		console.log('newProduct=' + JSON.stringify(res))
+		//console.log('newProduct=' + JSON.stringify(res))
 		return Response.json(res[0])
 	} catch (error) {
 		console.error(error)
 		return Response.json(
-			{ error: 'Internal Server Error' }, 
+			{ error: 'Internal Server Error', code: '500' },
 			{ status: 500 }
 		)
 	}
