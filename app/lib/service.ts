@@ -3,12 +3,12 @@ import { Product } from './product'
 import { User } from './user'
 
 export async function getProducts() {
-	const data = await fetch('http://localhost:3000/api/products')
+	const data = await fetch('/api/products')
 	return await data.json()
 }
 
 export async function getProduct(id: number) {
-	const data = await fetch('http://localhost:3000/api/products/' + id, {
+	const data = await fetch('/api/products/' + id, {
 		headers: {
 			'Content-Type': 'application/json',
 			'Authorization': 'Bearer ' + getUserAuthentication()
@@ -18,7 +18,7 @@ export async function getProduct(id: number) {
 }
 
 export async function updateProduct(id: number, p: Product) {
-	const data = await fetch('http://localhost:3000/api/products/' + id, {
+	const data = await fetch('/api/products/' + id, {
 		method: 'PATCH',
 		headers: {
 			'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ export async function updateProduct(id: number, p: Product) {
 }
 
 export async function addProduct(p: Product) {
-	const data = await fetch('http://localhost:3000/api/products/', {
+	const data = await fetch('/api/products/', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ export async function addProduct(p: Product) {
 }
 
 export async function deleteProduct(id: number) {
-	const data = await fetch('http://localhost:3000/api/products/' + id, {
+	const data = await fetch('/api/products/' + id, {
 		method: 'DELETE',
 		headers: {
 			'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ export async function deleteProduct(id: number) {
 }
 
 export async function userLogin(u: User) {
-	const data = await fetch('http://localhost:3000/api/users/login', {
+	const data = await fetch('/api/users/login', {
 		method: 'POST',
 		body: JSON.stringify(u)
 	})
