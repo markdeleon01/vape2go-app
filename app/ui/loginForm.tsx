@@ -45,16 +45,35 @@ export default function LoginForm() {
 			'#showPassword'
 		) as HTMLInputElement
 		showPassword.addEventListener('click', ()=>{
-			const passwordInputField = document.querySelector(
+			const pif = document.querySelector(
 				'#passwordField'
 			) as HTMLInputElement
-			if (passwordInputField.type == 'password') {
-				passwordInputField.type = 'text'
+			if (pif.type == 'password') {
+				pif.type = 'text'
 				showPassword.setAttribute('checked', '')
-			} else if (passwordInputField.type == 'text') {
-				passwordInputField.type = 'password'
+			} else if (pif.type == 'text') {
+				pif.type = 'password'
 				showPassword.removeAttribute('checked')
 			}
+		})
+
+		const passwordInputField = document.querySelector(
+			'#passwordField'
+		) as HTMLInputElement
+		passwordInputField.addEventListener('keydown', ()=>{
+			const sp = document.querySelector(
+				'#showPassword'
+			) as HTMLInputElement
+			const pif = document.querySelector(
+				'#passwordField'
+			) as HTMLInputElement
+			setTimeout(() => {
+				if (sp.checked) {
+					pif.type = 'text'
+				} else {
+					pif.type = 'password'
+				}
+			}, 1)
 		})
 
 		const loginButton = document.querySelector(
@@ -80,7 +99,7 @@ export default function LoginForm() {
 								'#showPassword'
 							) as HTMLInputElement
 							showPassword.checked = false
-							
+
 							if (data.code === '401') {
 								throw new Error('Invalid credentials. Please try again.')
 							} else {
@@ -116,7 +135,7 @@ export default function LoginForm() {
 								type='text'
 								id='usernameField'
 								name='usernameField'
-								placeholder='User name'
+								placeholder='Username'
 								alt='User name'
 								maxLength={255}
 								size={20}
