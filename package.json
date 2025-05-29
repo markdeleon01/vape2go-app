@@ -1,6 +1,6 @@
 {
   "name": "vape2go-app",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -11,13 +11,18 @@
   "dependencies": {
     "@neondatabase/serverless": "^1.0.0",
     "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2",
     "next": "15.3.1",
+    "nextjs-toploader": "^3.8.16",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-error-boundary": "^6.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

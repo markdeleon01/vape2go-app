@@ -1,0 +1,49 @@
+.adminLogin {
+	flex-direction: column;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	padding: 20px;
+	display: flex;
+	flex-wrap: nowrap;
+	align-content: center;
+	justify-content: center;
+	width: 100%;
+}
+
+.loginForm {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	align-content: center;
+	justify-content: center;
+	width: 100%;
+}
+
+.row {
+	flex-flow: row;
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+}
+
+.labelField {
+	width: 100%;
+	font-weight: bold;
+	margin-right: 15px;
+}
+
+.inputField {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	border-radius: 5px;
+	border: 2px solid lightgrey;
+	padding: 5px 10px;
+}
+
+.showPasswordLabel {
+	padding-left: 5px;
+}

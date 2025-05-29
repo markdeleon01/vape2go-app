@@ -1,0 +1,15 @@
+
+.error {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-content: center;
+	flex-wrap: nowrap;
+	width: 100%;
+}
+
+.errorMsg {
+	text-align: center;
+	color: red;
+	padding-bottom: 20px;
+}

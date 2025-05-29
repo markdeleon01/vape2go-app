@@ -1,0 +1,47 @@
+.productItem {
+	border-radius: 25px;
+	border: 2px solid cornflowerblue;
+	padding: 20px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+}
+
+.name {
+	flex-flow: row;
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	align-content: center;
+	flex-direction: row;
+}
+
+.buttonGroup {
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	width: 100%;
+	padding-top: 20px;
+}
+
+.leftButton {
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	width: 100%;
+}
+
+.rightButton {
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	width: 100%;
+}

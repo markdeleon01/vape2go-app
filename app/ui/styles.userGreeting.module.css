@@ -1,0 +1,16 @@
+.adminUser {
+	flex-direction: column;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	padding: 20px;
+	display: flex;
+	flex-wrap: nowrap;
+	align-content: center;
+	justify-content: center;
+	width: 100%;
+	align-items: center;
+}
+
+.logoutButton {
+	padding-top: 20px;
+}

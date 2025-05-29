@@ -1,8 +1,18 @@
 import { Product, ProductStore } from '@/app/lib/product'
+import verifyAuthToken from '@/app/middleware'
 
-export async function POST() {
+export async function POST(request: Request) {
 	console.log('POST /products/seed')
-
+	// verify the auth token before allowing the user to create a new product
+	try {
+		await verifyAuthToken(request)
+	} catch (error) {
+		console.error(error)
+		return Response.json(
+			{ error: 'Authentication failed' },
+			{ status: 401 }
+		)
+	}
 	try {
         const store = new ProductStore()
         
@@ -47,6 +57,46 @@ export async function POST() {
             puffs_number: 12000,
             type_product: "P",
             quantity: 1
+        },
+        {
+            name: "Pink Sweetheart",
+            brand: "Macaron",
+            price: 450.00,
+            description: "Macaron Pink Sweetheart",
+            flavour_name: "Strawberry Watermelon",
+            puffs_number: 8000,
+            type_product: "P",
+            quantity: 1
+        },
+        {
+            name: "Purple Gemstones",
+            brand: "Macaron",
+            price: 450.00,
+            description: "Macaron Purple Gemstones",
+            flavour_name: "Grapes",
+            puffs_number: 8000,
+            type_product: "P",
+            quantity: 1
+        },
+        {
+            name: "Tangy Purple",
+            brand: "One Bar",
+            price: 450.00,
+            description: "One Bar Tangy Purple",
+            flavour_name: "Grapes",
+            puffs_number: 14000,
+            type_product: "P",
+            quantity: 1
+        },
+        {
+            name: "Big Red",
+            brand: "X-FORGE",
+            price: 450.00,
+            description: "X-FORGE Big Red",
+            flavour_name: "Watermelon",
+            puffs_number: 14000,
+            type_product: "P",
+            quantity: 1
         }
         ]
 
@@ -59,7 +109,7 @@ export async function POST() {
 		return Response.json(listProducts)
 	} catch (error) {
 		console.error(error)
-		return Response.json({ error: 'Internal Server Error' }, { status: 500 })
+        return Response.json({ error: 'Internal Server Error', status: 500 }, { status: 500 })
 	}
 
     async function createProduct(p: Product, store: ProductStore) {

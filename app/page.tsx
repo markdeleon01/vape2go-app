@@ -1,9 +1,11 @@
 import Image from "next/image";
+import styles from './styles.home.module.css'
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+    <div className="grid justify-items-center min-h-screen font-[family-name:var(--font-geist-sans)]">
+      <main className="flex flex-col items-center sm:items-start">
+        <div className={styles.home}>
         <Image
           className="dark:invert"
           src="/vape2go_logo.jpg"
@@ -12,8 +14,7 @@ export default function Home() {
           height={500}
           priority
         />
-      </main>
-      <footer className="row-start-1 flex gap-[24px] flex-wrap items-center justify-center">
+        <p className={styles.linkFacebook}>
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
           href="https://web.facebook.com/profile.php?id=61560683637397"
@@ -26,9 +27,11 @@ export default function Home() {
             alt="Globe icon"
             width={16}
             height={16}
-          />This site is under construction.<br />Check us out on Facebook in the meantime!
+          />Follow us on Facebook!
         </a>
-      </footer>
+        </p>
+        </div>
+      </main>
     </div>
   );
 }
