@@ -45,7 +45,7 @@ export default function DeleteProductPage({
 					<>
 						<div className={styles.productDelete}>
 							<div className={styles.heading} id='deleteProductHeading'>
-								<p>Delete Product?</p>
+								<p>Delete Product</p>
 							</div>
 							<div className={styles.productForm}>
 								<ProductDelete product={product} />

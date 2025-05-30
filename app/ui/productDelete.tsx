@@ -109,16 +109,16 @@ export default function ProductDelete({
 						<b>Quantity:</b>&nbsp;&nbsp;{productItem.quantity}
 					</p>
 				</div>
-				<div className={styles.buttonGroup}>
-					<div className={styles.rightButton}>
-						<button
-							id='deleteButton'
-							type='button'
-							className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
-						>
-							Delete
-						</button>
-					</div>
+			</div>
+			<div className={styles.buttonGroup}>
+				<div className={styles.rightButton}>
+					<button
+						id='deleteButton'
+						type='button'
+						className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
+					>
+						Delete
+					</button>
 				</div>
 			</div>
 			{ errorMsg && 

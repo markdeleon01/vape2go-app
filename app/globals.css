@@ -28,6 +28,7 @@ body {
 a {
 	color: cornflowerblue;
 	text-decoration: underline;
+	cursor: pointer;
 }
 
 main {
@@ -37,4 +38,8 @@ main {
 
 input {
 	outline: none;
+}
+
+button {
+	cursor: pointer;
 }
