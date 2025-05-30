@@ -17,8 +17,34 @@ import ErrorComponent from '@/app/ui/error'
 import { useRouter } from 'next/navigation'
 
 export default function ProductAdd() {
+	const [thumbNailFile, setThumbNailFile] = useState<File | null>(null)
+
 	const [errorMsg, setErrorMsg] = useState('')
 	const router = useRouter()
+
+	const handleThumbNailFileClick = () => {
+		console.log('handleThumbNailFileClick called')
+		const thumbNailImageFileUploadInput = document.querySelector(
+			'#thumbNailImageFileUploadInput'
+		) as HTMLInputElement
+		thumbNailImageFileUploadInput.click() // launch the file upload dialog
+	}
+
+	const handleThumbNailFileUploadChange = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		console.log('handleThumbNailFileUploadChange files=', event.target.files)
+		if (event.target && event.target.files && event.target.files.length > 0) {
+			setThumbNailFile(event.target.files ? event.target.files[0] : null)
+			console.log('thumbNailFile=', thumbNailFile)
+			const thumbNailImageName = document.querySelector(
+				'#thumbnailImageName'
+			) as HTMLParagraphElement
+			thumbNailImageName.innerText = thumbNailFile
+				? thumbNailFile.name
+				: 'No file selected'
+		}
+	}
 
 	const product: Product = {
 		name: undefined,
@@ -147,13 +173,15 @@ export default function ProductAdd() {
 							return false
 						}, 200)
 					} else {
+						console.log('save::thumbnailImageFile=', thumbNailFile)
+
 						// if valid, continue
 						const p: Product = {
 							name: productName.value,
 							brand: productBrand.value,
 							price: pPrice,
 							description: productDescription.value,
-							image_blob: undefined,
+							image_blob: thumbNailFile ? thumbNailFile : undefined,
 							flavour_name: productFlavour.value,
 							puffs_number: pPuffs,
 							ingredients: productIngredients.value,
@@ -344,6 +372,37 @@ export default function ProductAdd() {
 								size={30}
 								defaultValue={product.ingredients}
 							/>
+						</div>
+					</div>
+					<div className={styles.row}>
+						<div className={styles.labelField}>
+							<label>Thumbnail image:</label>
+						</div>
+						<div className={styles.thumbnailImage}>
+							<button
+								id='thumbNailImageFileUploadButton'
+								name='thumbNailImageFileUploadButton'
+								type='button'
+								className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
+								onClick={handleThumbNailFileClick}
+							>
+								Upload
+							</button>
+						</div>
+						<div className={styles.thumbnailImage}>
+							<input
+								type='file'
+								id='thumbNailImageFileUploadInput'
+								name='thumbNailImageFileUploadInput'
+								title='Thumbnail image'
+								alt='Thumbnail image'
+								accept='image/*'
+								className={styles.imageFileInput}
+								onChange={handleThumbNailFileUploadChange}
+							/>
+						</div>
+						<div className={styles.thumbnailImage}>
+							<p id='thumbnailImageName'>No file selected</p>
 						</div>
 					</div>
 				</div>
