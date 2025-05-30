@@ -28,6 +28,7 @@ body {
 a {
 	color: cornflowerblue;
 	text-decoration: underline;
+	cursor: pointer;
 }
 
 main {
