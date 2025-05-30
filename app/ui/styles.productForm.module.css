@@ -45,7 +45,6 @@
 	flex-direction: row;
 	flex-wrap: nowrap;
 	width: 100%;
-	padding-top: 20px;
 }
 
 .leftButton {
@@ -64,4 +63,24 @@
 	flex-direction: row;
 	flex-wrap: nowrap;
 	width: 100%;
+}
+
+
+.thumbnailImage {
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	flex-direction: column;
+	flex-wrap: nowrap;
+}
+
+.imageFileButton {
+	cursor: pointer;
+	font: inherit;
+	min-height: 48px;
+	min-width: 48px;
+}
+
+.imageFileInput {
+	display: none;
 }
