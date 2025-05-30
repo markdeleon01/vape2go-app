@@ -178,35 +178,6 @@ export default function ProductForm({ product }: { product: Product }) {
 						/>
 					</div>
 				</div>
-				<div className={styles.row}>
-					<div className={styles.labelField}>
-						<label>Thumbnail image:</label>
-					</div>
-					<div className={styles.thumbnailImage}>
-						<button
-							id='thumbNailImageFileUploadButton'
-							name='thumbNailImageFileUploadButton'
-							type='button'
-							className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
-						>
-							Upload
-						</button>
-					</div>
-					<div className={styles.thumbnailImage}>
-						<input
-							type='file'
-							id='thumbNailImageFileUploadInput'
-							name='thumbNailImageFileUploadInput'
-							title='Thumbnail image'
-							alt='Thumbnail image'
-							accept='image/*'
-							className={styles.imageFileInput}
-						/>
-					</div>
-					<div className={styles.thumbnailImage}>
-						<p id='thumbnailImageName'>No file selected</p>
-					</div>
-				</div>
 			</div>
 			<div className={styles.buttonGroup}>
 				<div className={styles.rightButton}>
