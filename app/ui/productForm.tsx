@@ -185,7 +185,6 @@ export default function ProductForm({ product }: { product: Product }) {
 					<div className={styles.thumbnailImage}>
 						<button
 							id='thumbNailImageFileUploadButton'
-							name='thumbNailImageFileUploadButton'
 							type='button'
 							className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
 						>
@@ -196,9 +195,7 @@ export default function ProductForm({ product }: { product: Product }) {
 						<input
 							type='file'
 							id='thumbNailImageFileUploadInput'
-							name='thumbNailImageFileUploadInput'
 							title='Thumbnail image'
-							alt='Thumbnail image'
 							accept='image/*'
 							className={styles.imageFileInput}
 						/>
@@ -212,7 +209,7 @@ export default function ProductForm({ product }: { product: Product }) {
 				<div className={styles.rightButton}>
 					<button
 						id='saveButton'
-						type='button'
+						type='submit'
 						className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
 					>
 						Save

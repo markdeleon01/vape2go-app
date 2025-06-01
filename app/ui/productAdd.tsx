@@ -18,162 +18,127 @@ import { useRouter } from 'next/navigation'
 
 export default function ProductAdd() {
 	const [thumbNailFile, setThumbNailFile] = useState<File | null>(null)
-
 	const [errorMsg, setErrorMsg] = useState('')
 	const router = useRouter()
 
 	const handleThumbNailFileClick = () => {
-		console.log('handleThumbNailFileClick called')
 		const thumbNailImageFileUploadInput = document.querySelector(
 			'#thumbNailImageFileUploadInput'
 		) as HTMLInputElement
 		thumbNailImageFileUploadInput.click() // launch the file upload dialog
 	}
 
-	const handleThumbNailFileUploadChange = (
+	const handleThumbNailFileUploadChange = async (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
-		console.log('handleThumbNailFileUploadChange files=', event.target.files)
-		if (event.target && event.target.files && event.target.files.length > 0) {
-			setThumbNailFile(event.target.files ? event.target.files[0] : null)
-			console.log('thumbNailFile=', thumbNailFile)
-			const thumbNailImageName = document.querySelector(
-				'#thumbnailImageName'
-			) as HTMLParagraphElement
-			thumbNailImageName.innerText = thumbNailFile
-				? thumbNailFile.name
-				: 'No file selected'
+		if (event.target.files) {
+			// setting the state is asynchronous;
+			// need to use the useEffect hook to perform an action on state update
+			setThumbNailFile(event.target.files[0])
 		}
 	}
 
-	const product: Product = {
-		name: undefined,
-		brand: undefined,
-		price: undefined,
-		description: undefined,
-		image_blob: undefined,
-		flavour_name: undefined,
-		puffs_number: undefined,
-		ingredients: undefined,
-		type_product: undefined,
-		quantity: undefined
-	}
+	const handleSaveButtonClick = async (
+		event: React.MouseEvent<HTMLButtonElement>
+	) => {
+		event.stopPropagation()
+		event.preventDefault()
 
-	useEffect(() => {
-		console.log('ProductAdd useEffect called')
+		setTimeout(() => {
+			disableProductForm()
+		}, 100)
 
-		if (product.type_product === 'P') {
-			document
-				.querySelector('#productTypePod')
-				?.setAttribute('SELECTED', 'true')
-		} else if (product.type_product === 'B') {
-			document
-				.querySelector('#productTypeBattery')
-				?.setAttribute('SELECTED', 'true')
-		}
+		const productName = document.querySelector(
+			'#productName'
+		) as HTMLInputElement
+		const productBrand = document.querySelector(
+			'#productBrand'
+		) as HTMLInputElement
+		const productPrice = document.querySelector(
+			'#productPrice'
+		) as HTMLInputElement
 
-		setupFocusInputFields()
+		const productDescription = document.querySelector(
+			'#productDescription'
+		) as HTMLInputElement
+		const productFlavour = document.querySelector(
+			'#productFlavour'
+		) as HTMLInputElement
+		const productPuffs = document.querySelector(
+			'#productPuffsNumber'
+		) as HTMLInputElement
 
-		document
-			.querySelector('#saveButton')
-			?.addEventListener('click', function (event) {
-				event.stopPropagation()
-				event.preventDefault()
+		const productIngredients = document.querySelector(
+			'#productIngredients'
+		) as HTMLInputElement
+		const productType = document.querySelector(
+			'#productType'
+		) as HTMLSelectElement
 
+		const productQuantity = document.querySelector(
+			'#productQuantity'
+		) as HTMLInputElement
+
+		setTimeout(() => {
+			// validate product details
+			let isValid = true
+			if (productName.value === undefined || productName.value.trim() === '') {
+				productName.setAttribute('style', 'color: red')
+				isValid = false
+			}
+			if (
+				productBrand.value === undefined ||
+				productBrand.value.trim() === ''
+			) {
+				productBrand.setAttribute('style', 'color: red')
+				isValid = false
+			}
+			let pPrice = 0
+			if (productPrice.value != undefined) {
+				pPrice = Number.parseInt(productPrice.value)
+				if (Number.isNaN(pPrice)) {
+					productPrice.setAttribute('style', 'color: red')
+					productPrice.value = ''
+					isValid = false
+				}
+			}
+			if (
+				productFlavour.value === undefined ||
+				productFlavour.value.trim() === ''
+			) {
+				productFlavour.setAttribute('style', 'color: red')
+				isValid = false
+			}
+			let pPuffs = 0
+			if (productPuffs.value != undefined) {
+				pPuffs = Number.parseInt(productPuffs.value)
+				if (Number.isNaN(pPuffs)) {
+					productPuffs.setAttribute('style', 'color: red')
+					productPuffs.value = ''
+					isValid = false
+				}
+			}
+			let pQuantity = 0
+			if (productQuantity.value != undefined) {
+				pQuantity = Number.parseInt(productQuantity.value)
+				if (Number.isNaN(pQuantity)) {
+					productQuantity.setAttribute('style', 'color: red')
+					productQuantity.value = ''
+					isValid = false
+				}
+			}
+
+			if (!isValid) {
 				setTimeout(() => {
-					disableProductForm()
-				}, 100)
-
-				const productName = document.querySelector(
-					'#productName'
-				) as HTMLInputElement
-				const productBrand = document.querySelector(
-					'#productBrand'
-				) as HTMLInputElement
-				const productPrice = document.querySelector(
-					'#productPrice'
-				) as HTMLInputElement
-
-				const productDescription = document.querySelector(
-					'#productDescription'
-				) as HTMLInputElement
-				const productFlavour = document.querySelector(
-					'#productFlavour'
-				) as HTMLInputElement
-				const productPuffs = document.querySelector(
-					'#productPuffsNumber'
-				) as HTMLInputElement
-
-				const productIngredients = document.querySelector(
-					'#productIngredients'
-				) as HTMLInputElement
-				const productType = document.querySelector(
-					'#productType'
-				) as HTMLSelectElement
-
-				const productQuantity = document.querySelector(
-					'#productQuantity'
-				) as HTMLInputElement
-
-				setTimeout(() => {
-					// validate product details
-					let isValid = true
-					if (
-						productName.value === undefined ||
-						productName.value.trim() === ''
-					) {
-						productName.setAttribute('style', 'color: red')
-						isValid = false
-					}
-					if (
-						productBrand.value === undefined ||
-						productBrand.value.trim() === ''
-					) {
-						productBrand.setAttribute('style', 'color: red')
-						isValid = false
-					}
-					let pPrice = 0
-					if (productPrice.value != undefined) {
-						pPrice = Number.parseInt(productPrice.value)
-						if (Number.isNaN(pPrice)) {
-							productPrice.setAttribute('style', 'color: red')
-							productPrice.value = ''
-							isValid = false
-						}
-					}
-					if (
-						productFlavour.value === undefined ||
-						productFlavour.value.trim() === ''
-					) {
-						productFlavour.setAttribute('style', 'color: red')
-						isValid = false
-					}
-					let pPuffs = 0
-					if (productPuffs.value != undefined) {
-						pPuffs = Number.parseInt(productPuffs.value)
-						if (Number.isNaN(pPuffs)) {
-							productPuffs.setAttribute('style', 'color: red')
-							productPuffs.value = ''
-							isValid = false
-						}
-					}
-					let pQuantity = 0
-					if (productQuantity.value != undefined) {
-						pQuantity = Number.parseInt(productQuantity.value)
-						if (Number.isNaN(pQuantity)) {
-							productQuantity.setAttribute('style', 'color: red')
-							productQuantity.value = ''
-							isValid = false
-						}
-					}
-
-					if (!isValid) {
-						setTimeout(() => {
-							enableProductForm()
-							return false
-						}, 200)
-					} else {
-						console.log('save::thumbnailImageFile=', thumbNailFile)
+					enableProductForm()
+					return false
+				}, 200)
+			} else {
+				let imageBlob = undefined
+				if (thumbNailFile) {
+					thumbNailFile.arrayBuffer().then((arrayBuffer) => {
+						const buffer = Buffer.from(arrayBuffer)
+						imageBlob = buffer.toString('base64')
 
 						// if valid, continue
 						const p: Product = {
@@ -181,15 +146,13 @@ export default function ProductAdd() {
 							brand: productBrand.value,
 							price: pPrice,
 							description: productDescription.value,
-							image_blob: thumbNailFile ? thumbNailFile : undefined,
+							image_blob: imageBlob,
 							flavour_name: productFlavour.value,
 							puffs_number: pPuffs,
 							ingredients: productIngredients.value,
 							type_product: productType.value,
 							quantity: pQuantity
 						}
-
-						console.log('ProductAdd::p=', p)
 
 						addProduct(p)
 							.then((data) => {
@@ -208,10 +171,38 @@ export default function ProductAdd() {
 							})
 
 						return true
-					}
-				}, 100)
-			})
-	})
+					})
+				}
+			}
+		}, 200)
+	}
+
+	const product: Product = {
+		name: undefined,
+		brand: undefined,
+		price: undefined,
+		description: undefined,
+		image_blob: undefined,
+		flavour_name: undefined,
+		puffs_number: undefined,
+		ingredients: undefined,
+		type_product: undefined,
+		quantity: undefined
+	}
+
+	useEffect(() => {
+		setupFocusInputFields()
+	}, []) // empty array means executed once
+
+	useEffect(() => {
+		const thumbNailImageName = document.querySelector(
+			'#thumbnailImageName'
+		) as HTMLParagraphElement
+		thumbNailImageName.innerText = thumbNailFile
+			? thumbNailFile.name
+			: 'No file selected'
+
+	}, [router, thumbNailFile])
 
 	return (
 		<>
@@ -381,7 +372,6 @@ export default function ProductAdd() {
 						<div className={styles.thumbnailImage}>
 							<button
 								id='thumbNailImageFileUploadButton'
-								name='thumbNailImageFileUploadButton'
 								type='button'
 								className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
 								onClick={handleThumbNailFileClick}
@@ -393,9 +383,7 @@ export default function ProductAdd() {
 							<input
 								type='file'
 								id='thumbNailImageFileUploadInput'
-								name='thumbNailImageFileUploadInput'
 								title='Thumbnail image'
-								alt='Thumbnail image'
 								accept='image/*'
 								className={styles.imageFileInput}
 								onChange={handleThumbNailFileUploadChange}
@@ -410,8 +398,9 @@ export default function ProductAdd() {
 					<div className={styles.rightButton}>
 						<button
 							id='saveButton'
-							type='button'
+							type='submit'
 							className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
+							onClick={handleSaveButtonClick}
 						>
 							Save
 						</button>

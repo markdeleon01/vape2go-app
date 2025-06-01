@@ -8,7 +8,7 @@ export interface Product {
 	brand: string | undefined
 	price: number | undefined
 	description?: string | undefined
-	image_blob?: File | undefined
+	image_blob?: string | undefined
 	flavour_name: string | undefined
 	puffs_number: number | undefined
 	ingredients?: string | undefined
