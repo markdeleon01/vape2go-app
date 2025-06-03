@@ -8,7 +8,7 @@ import ErrorComponent from '@/app/ui/error'
 
 import styles from './styles.deleteProduct.module.css'
 
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect} from 'react'
 import { use } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { isUserAuthenticated } from '@/app/lib/authentication'
@@ -19,23 +19,17 @@ export default function DeleteProductPage({
 }: {
 	params: Promise<{ id: string }>
 }) {
-
-	const { id: theProductId } = use(params)
-	const productId: number = Number.parseInt(theProductId)
-	const product = getProduct(productId)
-
-	const [isUserLoggedIn, setUserLoggedIn] = useState(false)
-
-	useEffect( ()=> {
-		setUserLoggedIn(isUserAuthenticated())
-
+	useEffect(() => {
 		// check if user is authenticated to delete a product
 		if (!isUserAuthenticated()) {
 			console.error('Error loading page:  Not authorized')
 			unauthorized()
 		}
+	}, [])
 
-	}, [isUserLoggedIn])
+	const { id: theProductId } = use(params)
+	const productId: number = Number.parseInt(theProductId)
+	const product = getProduct(productId)
 
 	return (
 		<div className='grid justify-items-center min-h-screen font-[family-name:var(--font-geist-sans)]'>

@@ -2,19 +2,26 @@
 
 import { Product } from '@/app/lib/product'
 import styles from './styles.productItem.module.css'
+
 import Link from 'next/link'
+import Image from 'next/image'
+
 import { isUserAuthenticated } from '../lib/authentication'
 import { useEffect, useState } from 'react'
 
 export default function ProductItem( {product} : {product:Product} ) {
 	const editUrl = '/products/'+product.id+'/edit'
 	const deleteUrl = '/products/'+product.id+'/delete'
+	const [imageThumbnailPreviewDataUrl, setImageThumbnailPreviewDataUrl] = useState<string | null>(null)
 
-	const [isUserLoggedIn, setUserLoggedIn] = useState(false)
-
-	useEffect( ()=> {
-		setUserLoggedIn(isUserAuthenticated())
-	}, [isUserLoggedIn])
+	useEffect(() => {
+		if (product.image_blob != undefined || product.image_blob != null) {
+			const buffer = Buffer.from(product.image_blob)
+			const imageBlob = buffer.toString()
+			const dataUrl = `data:image/png;base64,${imageBlob}`
+			setImageThumbnailPreviewDataUrl(dataUrl)
+		}
+	}, [product.image_blob])
 
 	return (
 		<>
@@ -26,7 +33,7 @@ export default function ProductItem( {product} : {product:Product} ) {
 						</p>
 					</div>
 					{
-					(isUserLoggedIn) && 
+					(isUserAuthenticated()) && 
 					<div className={styles.actions}>
 						<div><Link data-testid='edit-product-link' href={editUrl}>Edit</Link></div>
 						<div><Link data-testid='delete-product-link' href={deleteUrl}>Delete</Link></div>
@@ -50,17 +57,7 @@ export default function ProductItem( {product} : {product:Product} ) {
 				</div>
 				<div>
 					<p>
-						<b>Description:</b>&nbsp;&nbsp;{product.description}
-					</p>
-				</div>
-				<div>
-					<p>
 						<b>Number of puffs:</b>&nbsp;&nbsp;{product.puffs_number}
-					</p>
-				</div>
-				<div>
-					<p>
-						<b>Ingredients:</b>&nbsp;&nbsp;{product.ingredients}
 					</p>
 				</div>
 				<div>
@@ -73,6 +70,20 @@ export default function ProductItem( {product} : {product:Product} ) {
 						<b>Quantity:</b>&nbsp;&nbsp;{product.quantity}
 					</p>
 				</div>
+				{imageThumbnailPreviewDataUrl && (
+				<div
+					id='thumbNailImagePreview'
+					className={styles.imageThumbnailPreview}
+				>
+					<Image
+						id='imageThumbnail'
+						src={imageThumbnailPreviewDataUrl}
+						alt='Image thumbnail preview'
+						width={250}
+						height={250}
+					/>
+				</div>
+				)}
 			</div>
 		</>
 	)

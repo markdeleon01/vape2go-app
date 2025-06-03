@@ -8,7 +8,7 @@ export interface Product {
 	brand: string | undefined
 	price: number | undefined
 	description?: string | undefined
-	image_blob?: File | undefined
+	image_blob?: string | undefined
 	flavour_name: string | undefined
 	puffs_number: number | undefined
 	ingredients?: string | undefined
@@ -33,7 +33,7 @@ export class ProductStore {
 			const imageBlob = p.image_blob
 				? p.image_blob
 				: null
-			console.log('create::imageBlob', imageBlob)
+
 			const data =
 				await sql`INSERT INTO products (name, brand, price, description, image_blob, flavour_name, puffs_number, ingredients, type_product, quantity) VALUES(${p.name}, ${p.brand}, ${p.price}, ${p.description}, ${imageBlob}, ${p.flavour_name}, ${p.puffs_number}, ${p.ingredients}, ${p.type_product}, ${p.quantity}) RETURNING *`
 			return data
@@ -58,7 +58,7 @@ export class ProductStore {
 			const imageBlob = p.image_blob
 				? p.image_blob
 				: null
-			console.log('update::imageBlob', imageBlob)
+
 			const data =
 				await sql`UPDATE products SET name = ${p.name}, brand = ${p.brand}, price = ${p.price}, description = ${p.description}, image_blob = ${imageBlob}, flavour_name = ${p.flavour_name}, puffs_number = ${p.puffs_number}, ingredients = ${p.ingredients}, type_product = ${p.type_product}, quantity = ${p.quantity} WHERE id=${id} RETURNING *`
 			return data

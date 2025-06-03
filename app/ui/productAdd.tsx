@@ -15,12 +15,15 @@ import styles from './styles.productForm.module.css'
 import ErrorComponent from '@/app/ui/error'
 
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 export default function ProductAdd() {
+	const [imageThumbnailBlob, setImageThumbnailBlob] = useState<string | null>(null)
+	const [imageThumbnailPreviewDataUrl, setImageThumbnailPreviewDataUrl] = useState<string | null>(null)
 	const [errorMsg, setErrorMsg] = useState('')
 	const router = useRouter()
 
-	const product: Product = {
+	const productItem: Product = {
 		name: undefined,
 		brand: undefined,
 		price: undefined,
@@ -33,157 +36,173 @@ export default function ProductAdd() {
 		quantity: undefined
 	}
 
-	useEffect(() => {
-		console.log('ProductAdd useEffect called')
+	const handleThumbNailFileClick = () => {
+		const thumbNailImageFileUploadInput = document.querySelector(
+			'#thumbNailImageFileUploadInput'
+		) as HTMLInputElement
+		thumbNailImageFileUploadInput.click() // launch the file upload dialog
+	}
 
-		if (product.type_product === 'P') {
-			document
-				.querySelector('#productTypePod')
-				?.setAttribute('SELECTED', 'true')
-		} else if (product.type_product === 'B') {
-			document
-				.querySelector('#productTypeBattery')
-				?.setAttribute('SELECTED', 'true')
-		}
+	const handleThumbNailFileUploadChange = async (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		if (event.target.files) {
+			const thumbNailImageName = document.querySelector(
+				'#thumbnailImageName'
+			) as HTMLParagraphElement
+			thumbNailImageName.innerText = event.target.files[0]
+				? event.target.files[0].name
+				: 'No file selected'
 
-		setupFocusInputFields()
-
-		document
-			.querySelector('#saveButton')
-			?.addEventListener('click', function (event) {
-				event.stopPropagation()
-				event.preventDefault()
-
-				setTimeout(() => {
-					disableProductForm()
-				}, 100)
-
-				const productName = document.querySelector(
-					'#productName'
-				) as HTMLInputElement
-				const productBrand = document.querySelector(
-					'#productBrand'
-				) as HTMLInputElement
-				const productPrice = document.querySelector(
-					'#productPrice'
-				) as HTMLInputElement
-
-				const productDescription = document.querySelector(
-					'#productDescription'
-				) as HTMLInputElement
-				const productFlavour = document.querySelector(
-					'#productFlavour'
-				) as HTMLInputElement
-				const productPuffs = document.querySelector(
-					'#productPuffsNumber'
-				) as HTMLInputElement
-
-				const productIngredients = document.querySelector(
-					'#productIngredients'
-				) as HTMLInputElement
-				const productType = document.querySelector(
-					'#productType'
-				) as HTMLSelectElement
-
-				const productQuantity = document.querySelector(
-					'#productQuantity'
-				) as HTMLInputElement
-
-				setTimeout(() => {
-					// validate product details
-					let isValid = true
-					if (
-						productName.value === undefined ||
-						productName.value.trim() === ''
-					) {
-						productName.setAttribute('style', 'color: red')
-						isValid = false
-					}
-					if (
-						productBrand.value === undefined ||
-						productBrand.value.trim() === ''
-					) {
-						productBrand.setAttribute('style', 'color: red')
-						isValid = false
-					}
-					let pPrice = 0
-					if (productPrice.value != undefined) {
-						pPrice = Number.parseInt(productPrice.value)
-						if (Number.isNaN(pPrice)) {
-							productPrice.setAttribute('style', 'color: red')
-							productPrice.value = ''
-							isValid = false
-						}
-					}
-					if (
-						productFlavour.value === undefined ||
-						productFlavour.value.trim() === ''
-					) {
-						productFlavour.setAttribute('style', 'color: red')
-						isValid = false
-					}
-					let pPuffs = 0
-					if (productPuffs.value != undefined) {
-						pPuffs = Number.parseInt(productPuffs.value)
-						if (Number.isNaN(pPuffs)) {
-							productPuffs.setAttribute('style', 'color: red')
-							productPuffs.value = ''
-							isValid = false
-						}
-					}
-					let pQuantity = 0
-					if (productQuantity.value != undefined) {
-						pQuantity = Number.parseInt(productQuantity.value)
-						if (Number.isNaN(pQuantity)) {
-							productQuantity.setAttribute('style', 'color: red')
-							productQuantity.value = ''
-							isValid = false
-						}
-					}
-
-					if (!isValid) {
-						setTimeout(() => {
-							enableProductForm()
-							return false
-						}, 200)
-					} else {
-						// if valid, continue
-						const p: Product = {
-							name: productName.value,
-							brand: productBrand.value,
-							price: pPrice,
-							description: productDescription.value,
-							image_blob: undefined,
-							flavour_name: productFlavour.value,
-							puffs_number: pPuffs,
-							ingredients: productIngredients.value,
-							type_product: productType.value,
-							quantity: pQuantity
-						}
-
-						console.log('ProductAdd::p=', p)
-
-						addProduct(p)
-							.then((data) => {
-								if (data.error) {
-									throw new Error('Error adding product.')
-								} else {
-									// Redirect to the products page
-									router.push('/products')
-								}
-							})
-							.catch((error) => {
-								console.error('Error adding product:', error)
-
-								// Display error message to the user
-								setErrorMsg(error.message)
-							})
-
-						return true
-					}
-				}, 100)
+			event.target.files[0].arrayBuffer().then((arrayBuffer) => {
+				const buffer = Buffer.from(arrayBuffer)
+				const imageBlob = buffer.toString('base64')
+				setImageThumbnailBlob(imageBlob)
 			})
-	})
+		}
+	}
+
+	const handleSaveButtonClick = async (
+		event: React.MouseEvent<HTMLButtonElement>
+	) => {
+		event.stopPropagation()
+		event.preventDefault()
+
+		setTimeout(() => {
+			disableProductForm()
+		}, 100)
+
+		const productName = document.querySelector(
+			'#productName'
+		) as HTMLInputElement
+		const productBrand = document.querySelector(
+			'#productBrand'
+		) as HTMLInputElement
+		const productPrice = document.querySelector(
+			'#productPrice'
+		) as HTMLInputElement
+
+		const productDescription = document.querySelector(
+			'#productDescription'
+		) as HTMLInputElement
+		const productFlavour = document.querySelector(
+			'#productFlavour'
+		) as HTMLInputElement
+		const productPuffs = document.querySelector(
+			'#productPuffsNumber'
+		) as HTMLInputElement
+
+		const productIngredients = document.querySelector(
+			'#productIngredients'
+		) as HTMLInputElement
+		const productType = document.querySelector(
+			'#productType'
+		) as HTMLSelectElement
+
+		const productQuantity = document.querySelector(
+			'#productQuantity'
+		) as HTMLInputElement
+
+		setTimeout(() => {
+			// validate product details
+			let isValid = true
+			if (productName.value === undefined || productName.value.trim() === '') {
+				productName.setAttribute('style', 'color: red')
+				isValid = false
+			}
+			if (
+				productBrand.value === undefined ||
+				productBrand.value.trim() === ''
+			) {
+				productBrand.setAttribute('style', 'color: red')
+				isValid = false
+			}
+			let pPrice = 0
+			if (productPrice.value != undefined) {
+				pPrice = Number.parseInt(productPrice.value)
+				if (Number.isNaN(pPrice)) {
+					productPrice.setAttribute('style', 'color: red')
+					productPrice.value = ''
+					isValid = false
+				}
+			}
+			if (
+				productFlavour.value === undefined ||
+				productFlavour.value.trim() === ''
+			) {
+				productFlavour.setAttribute('style', 'color: red')
+				isValid = false
+			}
+			let pPuffs = 0
+			if (productPuffs.value != undefined) {
+				pPuffs = Number.parseInt(productPuffs.value)
+				if (Number.isNaN(pPuffs)) {
+					productPuffs.setAttribute('style', 'color: red')
+					productPuffs.value = ''
+					isValid = false
+				}
+			}
+			let pQuantity = 0
+			if (productQuantity.value != undefined) {
+				pQuantity = Number.parseInt(productQuantity.value)
+				if (Number.isNaN(pQuantity)) {
+					productQuantity.setAttribute('style', 'color: red')
+					productQuantity.value = ''
+					isValid = false
+				}
+			}
+
+			if (!isValid) {
+				setTimeout(() => {
+					enableProductForm()
+					return false
+				}, 200)
+			} else {
+				// if valid, continue
+				const p: Product = {
+					name: productName.value,
+					brand: productBrand.value,
+					price: pPrice,
+					description: productDescription.value,
+					image_blob: imageThumbnailBlob ? imageThumbnailBlob : undefined,
+					flavour_name: productFlavour.value,
+					puffs_number: pPuffs,
+					ingredients: productIngredients.value,
+					type_product: productType.value,
+					quantity: pQuantity
+				}
+
+				addProduct(p)
+					.then((data) => {
+						if (data.error) {
+							throw new Error('Error adding product.')
+						} else {
+							// Redirect to the products page
+							router.push('/products')
+						}
+					})
+					.catch((error) => {
+						console.error('Error adding product:', error)
+
+						// Display error message to the user
+						setErrorMsg(error.message)
+					})
+
+				return true
+			}
+		}, 200)
+	}
+
+	useEffect(() => {
+		setupFocusInputFields()
+	}, []) // empty array means executed once
+	
+	useEffect(() => {
+		if (imageThumbnailBlob) {
+			const dataUrl = `data:image/png;base64,${imageThumbnailBlob}`
+			setImageThumbnailPreviewDataUrl(dataUrl)
+		}
+	}, [imageThumbnailBlob])
 
 	return (
 		<>
@@ -193,7 +212,7 @@ export default function ProductAdd() {
 						type='hidden'
 						id='productId'
 						name='productId'
-						value={product.id}
+						value={productItem.id}
 					/>
 					<div className={styles.row}>
 						<div className={styles.labelField}>
@@ -208,7 +227,7 @@ export default function ProductAdd() {
 								alt='Product name'
 								maxLength={255}
 								size={30}
-								defaultValue={product.name}
+								defaultValue={productItem.name}
 							/>
 						</div>
 					</div>
@@ -225,7 +244,7 @@ export default function ProductAdd() {
 								alt='Product brand'
 								maxLength={255}
 								size={30}
-								defaultValue={product.brand}
+								defaultValue={productItem.brand}
 							/>
 						</div>
 					</div>
@@ -242,7 +261,7 @@ export default function ProductAdd() {
 								alt='Product flavour'
 								maxLength={255}
 								size={30}
-								defaultValue={product.flavour_name}
+								defaultValue={productItem.flavour_name}
 							/>
 						</div>
 					</div>
@@ -274,7 +293,7 @@ export default function ProductAdd() {
 								alt='Product price'
 								maxLength={10}
 								size={30}
-								defaultValue={product.price}
+								defaultValue={productItem.price}
 							/>
 						</div>
 					</div>
@@ -291,7 +310,7 @@ export default function ProductAdd() {
 								alt='Product quantity'
 								maxLength={3}
 								size={30}
-								defaultValue={product.quantity}
+								defaultValue={productItem.quantity}
 							/>
 						</div>
 					</div>
@@ -308,7 +327,7 @@ export default function ProductAdd() {
 								alt='Product number of puffs'
 								maxLength={5}
 								size={30}
-								defaultValue={product.puffs_number}
+								defaultValue={productItem.puffs_number}
 							/>
 						</div>
 					</div>
@@ -325,7 +344,7 @@ export default function ProductAdd() {
 								alt='Product description'
 								maxLength={255}
 								size={30}
-								defaultValue={product.description}
+								defaultValue={productItem.description}
 							/>
 						</div>
 					</div>
@@ -342,17 +361,60 @@ export default function ProductAdd() {
 								alt='Product ingredients'
 								maxLength={255}
 								size={30}
-								defaultValue={product.ingredients}
+								defaultValue={productItem.ingredients}
 							/>
 						</div>
+					</div>
+					<div className={styles.row}>
+						<div className={styles.labelField}>
+							<label>Thumbnail image:</label>
+						</div>
+						<div className={styles.thumbnailImage}>
+							<button
+								id='thumbNailImageFileUploadButton'
+								type='button'
+								className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
+								onClick={handleThumbNailFileClick}
+							>
+								Upload
+							</button>
+						</div>
+						<div className={styles.thumbnailImage}>
+							<input
+								type='file'
+								id='thumbNailImageFileUploadInput'
+								title='Thumbnail image'
+								accept='image/*'
+								className={styles.imageFileInput}
+								onChange={handleThumbNailFileUploadChange}
+							/>
+						</div>
+						<div className={styles.thumbnailImage}>
+							<p id='thumbnailImageName' className={styles.imageFileName}>No file selected</p>
+						</div>
+						{imageThumbnailPreviewDataUrl && (
+							<div
+								id='thumbNailImagePreview'
+								className={styles.imageThumbnailPreview}
+							>
+								<Image
+									id='imageThumbnail'
+									src={imageThumbnailPreviewDataUrl}
+									alt='Image thumbnail preview'
+									width={250}
+									height={250}
+								/>
+							</div>
+						)}
 					</div>
 				</div>
 				<div className={styles.buttonGroup}>
 					<div className={styles.rightButton}>
 						<button
 							id='saveButton'
-							type='button'
+							type='submit'
 							className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
+							onClick={handleSaveButtonClick}
 						>
 							Save
 						</button>

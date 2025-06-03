@@ -8,7 +8,7 @@ import ErrorComponent from '@/app/ui/error'
 
 import styles from './styles.editProduct.module.css'
 
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect } from 'react'
 import { use } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { isUserAuthenticated } from '@/app/lib/authentication'
@@ -24,10 +24,7 @@ export default function EditProductPage({
 	const productId: number = Number.parseInt(theProductId)
 	const product = getProduct(productId)
 
-	const [isUserLoggedIn, setUserLoggedIn] = useState(false)
-
 	useEffect( ()=> {
-		setUserLoggedIn(isUserAuthenticated())
 
 		// check if user is authenticated to update a product
 		if (!isUserAuthenticated()) {
@@ -35,7 +32,7 @@ export default function EditProductPage({
 			unauthorized()
 		}
 
-	}, [isUserLoggedIn])
+	}, [])
 
 	return (
 		<div className='grid justify-items-center min-h-screen font-[family-name:var(--font-geist-sans)]'>
