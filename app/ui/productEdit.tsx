@@ -15,15 +15,22 @@ import styles from './styles.productForm.module.css'
 import ErrorComponent from '@/app/ui/error'
 
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 export default function ProductEdit({
 	product
 }: {
 	product: Promise<Product>
 }) {
-	const [thumbNailFile, setThumbNailFile] = useState<File | null>(null)
+	const [imageThumbnailBlob, setImageThumbnailBlob] = useState<string | null>(null)
+	const [imageThumbnailPreviewDataUrl, setImageThumbnailPreviewDataUrl] = useState<string | null>(null)
 	const [errorMsg, setErrorMsg] = useState('')
 	const router = useRouter()
+	const productItem = use(product)
+
+	if (!productItem.id) {
+		throw new Error('Error loading product')
+	}
 
 	const handleThumbNailFileClick = () => {
 		const thumbNailImageFileUploadInput = document.querySelector(
@@ -32,13 +39,22 @@ export default function ProductEdit({
 		thumbNailImageFileUploadInput.click() // launch the file upload dialog
 	}
 
-	const handleThumbNailFileUploadChange = async (
+	const handleThumbNailFileUploadChange = (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
 		if (event.target.files) {
-			// setting the state is asynchronous;
-			// need to use the useEffect hook to perform an action on state update
-			setThumbNailFile(event.target.files[0])
+			const thumbNailImageName = document.querySelector(
+				'#thumbnailImageName'
+			) as HTMLParagraphElement
+			thumbNailImageName.innerText = event.target.files[0]
+				? event.target.files[0].name
+				: 'No file selected'
+
+			event.target.files[0].arrayBuffer().then((arrayBuffer) => {
+				const buffer = Buffer.from(arrayBuffer)
+				const imageBlob = buffer.toString('base64')
+				setImageThumbnailBlob(imageBlob)
+			})
 		}
 	}
 
@@ -138,61 +154,47 @@ export default function ProductEdit({
 					return false
 				}, 200)
 			} else {
-				let imageBlob = undefined
-				if (thumbNailFile) {
-					thumbNailFile.arrayBuffer().then((arrayBuffer) => {
-						const buffer = Buffer.from(arrayBuffer)
-						imageBlob = buffer.toString('base64')
-
-						// if valid, continue
-						const productId = document.querySelector(
-							'#productId'
-						) as HTMLInputElement
-						let pId = 0
-						if (productId.value != null) {
-							pId = Number.parseInt(productId.value)
-						}
-
-						const p: Product = {
-							name: productName.value,
-							brand: productBrand.value,
-							price: pPrice,
-							description: productDescription.value,
-							image_blob: imageBlob,
-							flavour_name: productFlavour.value,
-							puffs_number: pPuffs,
-							ingredients: productIngredients.value,
-							type_product: productType.value,
-							quantity: pQuantity
-						}
-
-						updateProduct(pId, p)
-							.then((data) => {
-								if (data.error) {
-									throw new Error('Error updating product.')
-								} else {
-									// Redirect to the products page
-									router.push('/products')
-								}
-							})
-							.catch((error) => {
-								console.error('Error updating product:', error)
-
-								// Display error message to the user
-								setErrorMsg(error.message)
-							})
-
-						return true
-					})
+				// if valid, continue
+				const productId = document.querySelector(
+					'#productId'
+				) as HTMLInputElement
+				let pId = 0
+				if (productId.value != null) {
+					pId = Number.parseInt(productId.value)
 				}
+
+				const p: Product = {
+					name: productName.value,
+					brand: productBrand.value,
+					price: pPrice,
+					description: productDescription.value,
+					image_blob: imageThumbnailBlob ? imageThumbnailBlob : undefined,
+					flavour_name: productFlavour.value,
+					puffs_number: pPuffs,
+					ingredients: productIngredients.value,
+					type_product: productType.value,
+					quantity: pQuantity
+				}
+
+				updateProduct(pId, p)
+					.then((data) => {
+						if (data.error) {
+							throw new Error('Error updating product.')
+						} else {
+							// Redirect to the products page
+							router.push('/products')
+						}
+					})
+					.catch((error) => {
+						console.error('Error updating product:', error)
+
+						// Display error message to the user
+						setErrorMsg(error.message)
+					})
+
+				return true
 			}
 		}, 200)
-	}
-
-	const productItem = use(product)
-
-	if (!productItem.id) {
-		throw new Error('Error loading product')
 	}
 
 	useEffect(() => {
@@ -200,13 +202,24 @@ export default function ProductEdit({
 	}, []) // empty array means executed once
 
 	useEffect(() => {
-		const thumbNailImageName = document.querySelector(
-			'#thumbnailImageName'
-		) as HTMLParagraphElement
-		thumbNailImageName.innerText = thumbNailFile
-			? thumbNailFile.name
-			: 'No file selected'
-	}, [router, thumbNailFile])
+		if (productItem.image_blob != undefined || productItem.image_blob != null) {
+			const buffer = Buffer.from(productItem.image_blob)
+			const imageBlob = buffer.toString()
+			setImageThumbnailBlob(imageBlob)
+
+			const thumbNailImageName = document.querySelector(
+				'#thumbnailImageName'
+			) as HTMLParagraphElement
+			thumbNailImageName.innerText = ''
+		}
+	}, [productItem.image_blob])
+	
+	useEffect(() => {
+		if (imageThumbnailBlob) {
+			const dataUrl = `data:image/png;base64,${imageThumbnailBlob}`
+			setImageThumbnailPreviewDataUrl(dataUrl)
+		}
+	}, [imageThumbnailBlob])
 
 	return (
 		<>
@@ -394,8 +407,22 @@ export default function ProductEdit({
 							/>
 						</div>
 						<div className={styles.thumbnailImage}>
-							<p id='thumbnailImageName'>No file selected</p>
+							<p id='thumbnailImageName' className={styles.imageFileName}>No file selected</p>
 						</div>
+						{imageThumbnailPreviewDataUrl && (
+							<div
+								id='thumbNailImagePreview'
+								className={styles.imageThumbnailPreview}
+							>
+								<Image
+									id='imageThumbnail'
+									src={imageThumbnailPreviewDataUrl}
+									alt='Image thumbnail preview'
+									width={250}
+									height={250}
+								/>
+							</div>
+						)}
 					</div>
 				</div>
 				<div className={styles.buttonGroup}>

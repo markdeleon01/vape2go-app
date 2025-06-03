@@ -1,7 +1,6 @@
 'use client'
 
-import { use } from 'react'
-import { useEffect, useState } from 'react'
+import { use, useState } from 'react'
 
 import { Product } from '@/app/lib/product'
 import { deleteProduct } from '@/app/lib/service'
@@ -17,7 +16,6 @@ export default function ProductDelete({
 	product: Promise<Product>
 }) {
 	const [errorMsg, setErrorMsg] = useState('')
-
 	const router = useRouter()
 	const productItem = use(product)
 
@@ -25,40 +23,33 @@ export default function ProductDelete({
 		throw new Error('Error loading product')
 	}
 
-	useEffect(() => {
-		document
-			.querySelector('#deleteButton')
-			?.addEventListener('click', (event) => {
-				event.preventDefault()
-				event.stopPropagation()
+	const handleDeleteButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+		const deleteButton = event.target as HTMLButtonElement
+		deleteButton.innerText = 'Deleting...'
+		deleteButton.setAttribute('disabled', 'true')
+		deleteButton.className =
+			'text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-full text-sm px-5 py-2.5 text-center'
 
-				const deleteButton = event.target as HTMLButtonElement
-				deleteButton.innerText = 'Deleting...'
-				deleteButton.setAttribute('disabled', 'true')
-				deleteButton.className =
-					'text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-full text-sm px-5 py-2.5 text-center'
+		let pId = 0
+		if (productItem.id != undefined) {
+			pId = productItem.id as number
+		}
 
-				let pId = 0
-				if (productItem.id != undefined) {
-					pId = productItem.id as number
-				}
+		deleteProduct(pId).then((data) => {
+			if (data.error) {
+				throw new Error('Error deleting product.')
+			} else {	
+				// Redirect to the products page
+				router.push('/products')
+			}
 
-				deleteProduct(pId).then((data) => {
-					if (data.error) {
-						throw new Error('Error deleting product.')
-					} else {	
-						// Redirect to the products page
-						router.push('/products')
-					}
+		}).catch((error) => {
+			console.error('Error deleting product:', error)
 
-				}).catch((error) => {
-					console.error('Error deleting product:', error)
-
-					// Display error message to the user
-					setErrorMsg(error.message)
-				})
-			})
-	}, [productItem.id, router])
+			// Display error message to the user
+			setErrorMsg(error.message)
+		})
+	}
 
 	return (
 		<>
@@ -116,6 +107,7 @@ export default function ProductDelete({
 						id='deleteButton'
 						type='button'
 						className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
+						onClick={handleDeleteButtonClick}
 					>
 						Delete
 					</button>

@@ -45,6 +45,7 @@
 	flex-direction: row;
 	flex-wrap: nowrap;
 	width: 100%;
+	padding-bottom: 40px;
 }
 
 .leftButton {
@@ -65,13 +66,13 @@
 	width: 100%;
 }
 
-
 .thumbnailImage {
 	display: flex;
 	justify-content: center;
 	align-content: center;
 	flex-direction: column;
 	flex-wrap: nowrap;
+	width: 100%;
 }
 
 .imageFileButton {
@@ -83,4 +84,28 @@
 
 .imageFileInput {
 	display: none;
+}
+
+.imageFileName {
+	display: flex;
+	width: 100%;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-content: center;
+	justify-content: center;
+	align-items: center;
+}
+
+.imageThumbnailPreview {
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	width: 100%;
+	border-radius: 10px;
+	border: 2px solid lightgrey;
+	object-fit: cover;
+	padding: 10px;
+	margin-top: 30px;
 }

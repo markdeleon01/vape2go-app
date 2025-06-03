@@ -15,11 +15,26 @@ import styles from './styles.productForm.module.css'
 import ErrorComponent from '@/app/ui/error'
 
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 export default function ProductAdd() {
-	const [thumbNailFile, setThumbNailFile] = useState<File | null>(null)
+	const [imageThumbnailBlob, setImageThumbnailBlob] = useState<string | null>(null)
+	const [imageThumbnailPreviewDataUrl, setImageThumbnailPreviewDataUrl] = useState<string | null>(null)
 	const [errorMsg, setErrorMsg] = useState('')
 	const router = useRouter()
+
+	const productItem: Product = {
+		name: undefined,
+		brand: undefined,
+		price: undefined,
+		description: undefined,
+		image_blob: undefined,
+		flavour_name: undefined,
+		puffs_number: undefined,
+		ingredients: undefined,
+		type_product: undefined,
+		quantity: undefined
+	}
 
 	const handleThumbNailFileClick = () => {
 		const thumbNailImageFileUploadInput = document.querySelector(
@@ -32,9 +47,18 @@ export default function ProductAdd() {
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
 		if (event.target.files) {
-			// setting the state is asynchronous;
-			// need to use the useEffect hook to perform an action on state update
-			setThumbNailFile(event.target.files[0])
+			const thumbNailImageName = document.querySelector(
+				'#thumbnailImageName'
+			) as HTMLParagraphElement
+			thumbNailImageName.innerText = event.target.files[0]
+				? event.target.files[0].name
+				: 'No file selected'
+
+			event.target.files[0].arrayBuffer().then((arrayBuffer) => {
+				const buffer = Buffer.from(arrayBuffer)
+				const imageBlob = buffer.toString('base64')
+				setImageThumbnailBlob(imageBlob)
+			})
 		}
 	}
 
@@ -134,75 +158,51 @@ export default function ProductAdd() {
 					return false
 				}, 200)
 			} else {
-				let imageBlob = undefined
-				if (thumbNailFile) {
-					thumbNailFile.arrayBuffer().then((arrayBuffer) => {
-						const buffer = Buffer.from(arrayBuffer)
-						imageBlob = buffer.toString('base64')
-
-						// if valid, continue
-						const p: Product = {
-							name: productName.value,
-							brand: productBrand.value,
-							price: pPrice,
-							description: productDescription.value,
-							image_blob: imageBlob,
-							flavour_name: productFlavour.value,
-							puffs_number: pPuffs,
-							ingredients: productIngredients.value,
-							type_product: productType.value,
-							quantity: pQuantity
-						}
-
-						addProduct(p)
-							.then((data) => {
-								if (data.error) {
-									throw new Error('Error adding product.')
-								} else {
-									// Redirect to the products page
-									router.push('/products')
-								}
-							})
-							.catch((error) => {
-								console.error('Error adding product:', error)
-
-								// Display error message to the user
-								setErrorMsg(error.message)
-							})
-
-						return true
-					})
+				// if valid, continue
+				const p: Product = {
+					name: productName.value,
+					brand: productBrand.value,
+					price: pPrice,
+					description: productDescription.value,
+					image_blob: imageThumbnailBlob ? imageThumbnailBlob : undefined,
+					flavour_name: productFlavour.value,
+					puffs_number: pPuffs,
+					ingredients: productIngredients.value,
+					type_product: productType.value,
+					quantity: pQuantity
 				}
+
+				addProduct(p)
+					.then((data) => {
+						if (data.error) {
+							throw new Error('Error adding product.')
+						} else {
+							// Redirect to the products page
+							router.push('/products')
+						}
+					})
+					.catch((error) => {
+						console.error('Error adding product:', error)
+
+						// Display error message to the user
+						setErrorMsg(error.message)
+					})
+
+				return true
 			}
 		}, 200)
-	}
-
-	const product: Product = {
-		name: undefined,
-		brand: undefined,
-		price: undefined,
-		description: undefined,
-		image_blob: undefined,
-		flavour_name: undefined,
-		puffs_number: undefined,
-		ingredients: undefined,
-		type_product: undefined,
-		quantity: undefined
 	}
 
 	useEffect(() => {
 		setupFocusInputFields()
 	}, []) // empty array means executed once
-
+	
 	useEffect(() => {
-		const thumbNailImageName = document.querySelector(
-			'#thumbnailImageName'
-		) as HTMLParagraphElement
-		thumbNailImageName.innerText = thumbNailFile
-			? thumbNailFile.name
-			: 'No file selected'
-
-	}, [router, thumbNailFile])
+		if (imageThumbnailBlob) {
+			const dataUrl = `data:image/png;base64,${imageThumbnailBlob}`
+			setImageThumbnailPreviewDataUrl(dataUrl)
+		}
+	}, [imageThumbnailBlob])
 
 	return (
 		<>
@@ -212,7 +212,7 @@ export default function ProductAdd() {
 						type='hidden'
 						id='productId'
 						name='productId'
-						value={product.id}
+						value={productItem.id}
 					/>
 					<div className={styles.row}>
 						<div className={styles.labelField}>
@@ -227,7 +227,7 @@ export default function ProductAdd() {
 								alt='Product name'
 								maxLength={255}
 								size={30}
-								defaultValue={product.name}
+								defaultValue={productItem.name}
 							/>
 						</div>
 					</div>
@@ -244,7 +244,7 @@ export default function ProductAdd() {
 								alt='Product brand'
 								maxLength={255}
 								size={30}
-								defaultValue={product.brand}
+								defaultValue={productItem.brand}
 							/>
 						</div>
 					</div>
@@ -261,7 +261,7 @@ export default function ProductAdd() {
 								alt='Product flavour'
 								maxLength={255}
 								size={30}
-								defaultValue={product.flavour_name}
+								defaultValue={productItem.flavour_name}
 							/>
 						</div>
 					</div>
@@ -293,7 +293,7 @@ export default function ProductAdd() {
 								alt='Product price'
 								maxLength={10}
 								size={30}
-								defaultValue={product.price}
+								defaultValue={productItem.price}
 							/>
 						</div>
 					</div>
@@ -310,7 +310,7 @@ export default function ProductAdd() {
 								alt='Product quantity'
 								maxLength={3}
 								size={30}
-								defaultValue={product.quantity}
+								defaultValue={productItem.quantity}
 							/>
 						</div>
 					</div>
@@ -327,7 +327,7 @@ export default function ProductAdd() {
 								alt='Product number of puffs'
 								maxLength={5}
 								size={30}
-								defaultValue={product.puffs_number}
+								defaultValue={productItem.puffs_number}
 							/>
 						</div>
 					</div>
@@ -344,7 +344,7 @@ export default function ProductAdd() {
 								alt='Product description'
 								maxLength={255}
 								size={30}
-								defaultValue={product.description}
+								defaultValue={productItem.description}
 							/>
 						</div>
 					</div>
@@ -361,7 +361,7 @@ export default function ProductAdd() {
 								alt='Product ingredients'
 								maxLength={255}
 								size={30}
-								defaultValue={product.ingredients}
+								defaultValue={productItem.ingredients}
 							/>
 						</div>
 					</div>
@@ -390,8 +390,22 @@ export default function ProductAdd() {
 							/>
 						</div>
 						<div className={styles.thumbnailImage}>
-							<p id='thumbnailImageName'>No file selected</p>
+							<p id='thumbnailImageName' className={styles.imageFileName}>No file selected</p>
 						</div>
+						{imageThumbnailPreviewDataUrl && (
+							<div
+								id='thumbNailImagePreview'
+								className={styles.imageThumbnailPreview}
+							>
+								<Image
+									id='imageThumbnail'
+									src={imageThumbnailPreviewDataUrl}
+									alt='Image thumbnail preview'
+									width={250}
+									height={250}
+								/>
+							</div>
+						)}
 					</div>
 				</div>
 				<div className={styles.buttonGroup}>
