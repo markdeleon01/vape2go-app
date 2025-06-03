@@ -1,6 +1,6 @@
 'use client'
 
-import { use, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 
 import { Product } from '@/app/lib/product'
 import { deleteProduct } from '@/app/lib/service'
@@ -8,6 +8,7 @@ import { deleteProduct } from '@/app/lib/service'
 import styles from './styles.productDetail.module.css'
 
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import ErrorComponent from '@/app/ui/error'
 
 export default function ProductDelete({
@@ -15,6 +16,7 @@ export default function ProductDelete({
 }: {
 	product: Promise<Product>
 }) {
+	const [imageThumbnailPreviewDataUrl, setImageThumbnailPreviewDataUrl] = useState<string | null>(null)
 	const [errorMsg, setErrorMsg] = useState('')
 	const router = useRouter()
 	const productItem = use(product)
@@ -50,6 +52,15 @@ export default function ProductDelete({
 			setErrorMsg(error.message)
 		})
 	}
+
+	useEffect(() => {
+		if (productItem.image_blob != undefined || productItem.image_blob != null) {
+			const buffer = Buffer.from(productItem.image_blob)
+			const imageBlob = buffer.toString()
+			const dataUrl = `data:image/png;base64,${imageBlob}`
+			setImageThumbnailPreviewDataUrl(dataUrl)
+		}
+	}, [productItem.image_blob])
 
 	return (
 		<>
@@ -100,6 +111,20 @@ export default function ProductDelete({
 						<b>Quantity:</b>&nbsp;&nbsp;{productItem.quantity}
 					</p>
 				</div>
+				{imageThumbnailPreviewDataUrl && (
+				<div
+					id='thumbNailImagePreview'
+					className={styles.imageThumbnailPreview}
+				>
+					<Image
+						id='imageThumbnail'
+						src={imageThumbnailPreviewDataUrl}
+						alt='Image thumbnail preview'
+						width={250}
+						height={250}
+					/>
+				</div>
+				)}
 			</div>
 			<div className={styles.buttonGroup}>
 				<div className={styles.rightButton}>
