@@ -4,10 +4,16 @@ import { getProducts } from '@/app/lib/service'
 
 import Loading from '@/app/ui/loading'
 import ErrorComponent from '@/app/ui/error'
-import ProductsList from '../ui/productsList'
 
 import { Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
+
+import dynamic from 'next/dynamic'
+
+const ProductsList = dynamic(
+	() => import('@/app/ui/productsList'),
+	{ ssr: false }
+)
 
 export default function ProductsPage() {
 	const products = getProducts()
