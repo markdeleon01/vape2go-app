@@ -38,7 +38,6 @@ export default function ProductsPage() {
 					<Suspense fallback={<Loading />}>
 						{ isLoading && <Loading />}
 						{ !isLoading && <ProductsList products={products} />}
-						
 					</Suspense>
 				</ErrorBoundary>
 			</main>

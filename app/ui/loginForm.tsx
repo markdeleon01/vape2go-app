@@ -171,7 +171,7 @@ export default function LoginForm() {
 						</div>
 					</div>
 					<div className={styles.row}>
-						<div>
+						<div className={styles.loginButton}>
 							<button
 								id='loginButton'
 								type='submit'

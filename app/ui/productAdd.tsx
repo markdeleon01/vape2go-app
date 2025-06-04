@@ -18,8 +18,11 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
 export default function ProductAdd() {
-	const [imageThumbnailBlob, setImageThumbnailBlob] = useState<string | null>(null)
-	const [imageThumbnailPreviewDataUrl, setImageThumbnailPreviewDataUrl] = useState<string | null>(null)
+	const [imageThumbnailBlob, setImageThumbnailBlob] = useState<string | null>(
+		null
+	)
+	const [imageThumbnailPreviewDataUrl, setImageThumbnailPreviewDataUrl] =
+		useState<string | null>(null)
 	const [errorMsg, setErrorMsg] = useState('')
 	const router = useRouter()
 
@@ -196,7 +199,7 @@ export default function ProductAdd() {
 	useEffect(() => {
 		setupFocusInputFields()
 	}, []) // empty array means executed once
-	
+
 	useEffect(() => {
 		if (imageThumbnailBlob) {
 			const dataUrl = `data:image/png;base64,${imageThumbnailBlob}`
@@ -390,7 +393,9 @@ export default function ProductAdd() {
 							/>
 						</div>
 						<div className={styles.thumbnailImage}>
-							<p id='thumbnailImageName' className={styles.imageFileName}>No file selected</p>
+							<p id='thumbnailImageName' className={styles.imageFileName}>
+								No file selected
+							</p>
 						</div>
 						{imageThumbnailPreviewDataUrl && (
 							<div
@@ -416,7 +421,7 @@ export default function ProductAdd() {
 							className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
 							onClick={handleSaveButtonClick}
 						>
-							Save
+							Add
 						</button>
 					</div>
 				</div>

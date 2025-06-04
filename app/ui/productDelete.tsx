@@ -64,82 +64,83 @@ export default function ProductDelete({
 
 	return (
 		<>
-			<div className={styles.productItem}>
-				<div className={styles.name}>
-					<p>
-						<b>Name:</b>&nbsp;&nbsp;{productItem.name}
-					</p>
-				</div>
-				<div>
-					<p>
-						<b>Brand:</b>&nbsp;&nbsp;{productItem.brand}
-					</p>
-				</div>
-				<div>
-					<p>
-						<b>Type:</b>&nbsp;&nbsp;
-						{productItem.type_product === 'P' ? 'Pod' : 'Battery'}
-					</p>
-				</div>
-				<div>
-					<p>
-						<b>Flavour name:</b>&nbsp;&nbsp;{productItem.flavour_name}
-					</p>
-				</div>
-				<div>
-					<p>
-						<b>Description:</b>&nbsp;&nbsp;{productItem.description}
-					</p>
-				</div>
-				<div>
-					<p>
-						<b>Number of puffs:</b>&nbsp;&nbsp;{productItem.puffs_number}
-					</p>
-				</div>
-				<div>
-					<p>
-						<b>Ingredients:</b>&nbsp;&nbsp;{productItem.ingredients}
-					</p>
-				</div>
-				<div>
-					<p>
-						<b>Price:</b>&nbsp;&nbsp;&#8369;{productItem.price}
-					</p>
-				</div>
-				<div>
-					<p>
-						<b>Quantity:</b>&nbsp;&nbsp;{productItem.quantity}
-					</p>
-				</div>
-				{imageThumbnailPreviewDataUrl && (
-				<div
-					id='thumbNailImagePreview'
-					className={styles.imageThumbnailPreview}
-				>
-					<Image
-						id='imageThumbnail'
-						src={imageThumbnailPreviewDataUrl}
-						alt='Image thumbnail preview'
-						width={250}
-						height={250}
-					/>
-				</div>
-				)}
-			</div>
-			<div className={styles.buttonGroup}>
-				<div className={styles.rightButton}>
-					<button
-						id='deleteButton'
-						type='button'
-						className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
-						onClick={handleDeleteButtonClick}
+			<form>
+				<div className={styles.productItem}>
+					<div className={styles.name}>
+						<p>
+							<b>Name:</b>&nbsp;&nbsp;{productItem.name}
+						</p>
+					</div>
+					<div>
+						<p>
+							<b>Brand:</b>&nbsp;&nbsp;{productItem.brand}
+						</p>
+					</div>
+					<div>
+						<p>
+							<b>Type:</b>&nbsp;&nbsp;
+							{productItem.type_product === 'P' ? 'Pod' : 'Battery'}
+						</p>
+					</div>
+					<div>
+						<p>
+							<b>Flavour name:</b>&nbsp;&nbsp;{productItem.flavour_name}
+						</p>
+					</div>
+					<div>
+						<p>
+							<b>Description:</b>&nbsp;&nbsp;{productItem.description}
+						</p>
+					</div>
+					<div>
+						<p>
+							<b>Number of puffs:</b>&nbsp;&nbsp;{productItem.puffs_number}
+						</p>
+					</div>
+					<div>
+						<p>
+							<b>Ingredients:</b>&nbsp;&nbsp;{productItem.ingredients}
+						</p>
+					</div>
+					<div>
+						<p>
+							<b>Price:</b>&nbsp;&nbsp;&#8369;{productItem.price}
+						</p>
+					</div>
+					<div>
+						<p>
+							<b>Quantity:</b>&nbsp;&nbsp;{productItem.quantity}
+						</p>
+					</div>
+					{imageThumbnailPreviewDataUrl && (
+					<div
+						id='thumbNailImagePreview'
+						className={styles.imageThumbnailPreview}
 					>
-						Delete
-					</button>
+						<Image
+							id='imageThumbnail'
+							src={imageThumbnailPreviewDataUrl}
+							alt='Image thumbnail preview'
+							width={250}
+							height={250}
+						/>
+					</div>
+					)}
 				</div>
-			</div>
-			{ errorMsg && 
-				<ErrorComponent error={new Error(errorMsg)}/>
+				<div className={styles.buttonGroup}>
+					<div className={styles.rightButton}>
+						<button
+							id='deleteButton'
+							type='button'
+							className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
+							onClick={handleDeleteButtonClick}
+						>
+							Delete
+						</button>
+					</div>
+				</div>
+			</form>
+			{ errorMsg && <ErrorComponent error={new Error(errorMsg)}/>
 			}
 		</>
 	)
